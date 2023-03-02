@@ -116,5 +116,80 @@
   <ItemGroup>
     <None Include="Resources\Rook_white.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Bishop_black1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\row-1-column-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\row-1-column-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\row-1-column-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\row-1-column-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\row-1-column-5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\row-1-column-6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\row-2-column-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\row-2-column-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\row-2-column-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\row-2-column-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\row-2-column-5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\row-2-column-6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Black_bishop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Black_king.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Black_knight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Black_pawn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Black_queen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Black_rook.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\White_bishop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\White_king.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\White_knight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\White_pawn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\White_queen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\White_rook.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
