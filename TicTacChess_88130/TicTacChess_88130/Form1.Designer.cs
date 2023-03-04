@@ -36,7 +36,7 @@ namespace TicTacChess_88130
             this.rbtBlack = new System.Windows.Forms.RadioButton();
             this.rbtWhite = new System.Windows.Forms.RadioButton();
             this.gbxBoard = new System.Windows.Forms.GroupBox();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.pnlBoard = new System.Windows.Forms.Panel();
             this.pbxNine = new System.Windows.Forms.PictureBox();
             this.pbxEight = new System.Windows.Forms.PictureBox();
             this.pbxSeven = new System.Windows.Forms.PictureBox();
@@ -52,7 +52,7 @@ namespace TicTacChess_88130
             ((System.ComponentModel.ISupportInitialize)(this.pbxQueen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxOne)).BeginInit();
             this.gbxBoard.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.pnlBoard.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxNine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxSeven)).BeginInit();
@@ -74,6 +74,7 @@ namespace TicTacChess_88130
             this.pbxRook.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbxRook.TabIndex = 3;
             this.pbxRook.TabStop = false;
+            this.pbxRook.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pcbAllPieces_MouseDown);
             // 
             // pbxKnight
             // 
@@ -86,6 +87,7 @@ namespace TicTacChess_88130
             this.pbxKnight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbxKnight.TabIndex = 2;
             this.pbxKnight.TabStop = false;
+            this.pbxKnight.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pcbAllPieces_MouseDown);
             // 
             // pbxQueen
             // 
@@ -98,6 +100,7 @@ namespace TicTacChess_88130
             this.pbxQueen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbxQueen.TabIndex = 1;
             this.pbxQueen.TabStop = false;
+            this.pbxQueen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pcbAllPieces_MouseDown);
             // 
             // pbxOne
             // 
@@ -109,6 +112,8 @@ namespace TicTacChess_88130
             this.pbxOne.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbxOne.TabIndex = 0;
             this.pbxOne.TabStop = false;
+            this.pbxOne.DragDrop += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragDrop);
+            this.pbxOne.DragOver += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragOver);
             // 
             // rbtBlack
             // 
@@ -122,7 +127,7 @@ namespace TicTacChess_88130
             this.rbtBlack.TabIndex = 4;
             this.rbtBlack.Text = "Black";
             this.rbtBlack.UseVisualStyleBackColor = true;
-            this.rbtBlack.CheckedChanged += new System.EventHandler(this.rbtBlack_CheckedChanged);
+            this.rbtBlack.CheckedChanged += new System.EventHandler(this.rbtAny_CheckedChanged);
             // 
             // rbtWhite
             // 
@@ -138,12 +143,12 @@ namespace TicTacChess_88130
             this.rbtWhite.TabStop = true;
             this.rbtWhite.Text = "White";
             this.rbtWhite.UseVisualStyleBackColor = true;
-            this.rbtWhite.CheckedChanged += new System.EventHandler(this.rbtWhite_CheckedChanged);
+            this.rbtWhite.CheckedChanged += new System.EventHandler(this.rbtAny_CheckedChanged);
             // 
             // gbxBoard
             // 
             this.gbxBoard.BackColor = System.Drawing.Color.Transparent;
-            this.gbxBoard.Controls.Add(this.panel1);
+            this.gbxBoard.Controls.Add(this.pnlBoard);
             this.gbxBoard.ForeColor = System.Drawing.Color.White;
             this.gbxBoard.Location = new System.Drawing.Point(208, 72);
             this.gbxBoard.Name = "gbxBoard";
@@ -152,22 +157,22 @@ namespace TicTacChess_88130
             this.gbxBoard.TabStop = false;
             this.gbxBoard.Text = "Board";
             // 
-            // panel1
+            // pnlBoard
             // 
-            this.panel1.BackColor = System.Drawing.Color.Black;
-            this.panel1.Controls.Add(this.pbxNine);
-            this.panel1.Controls.Add(this.pbxEight);
-            this.panel1.Controls.Add(this.pbxSeven);
-            this.panel1.Controls.Add(this.pbxSix);
-            this.panel1.Controls.Add(this.pbxFive);
-            this.panel1.Controls.Add(this.pbxFour);
-            this.panel1.Controls.Add(this.pbxThree);
-            this.panel1.Controls.Add(this.pbxTwo);
-            this.panel1.Controls.Add(this.pbxOne);
-            this.panel1.Location = new System.Drawing.Point(6, 31);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(480, 485);
-            this.panel1.TabIndex = 0;
+            this.pnlBoard.BackColor = System.Drawing.Color.Black;
+            this.pnlBoard.Controls.Add(this.pbxNine);
+            this.pnlBoard.Controls.Add(this.pbxEight);
+            this.pnlBoard.Controls.Add(this.pbxSeven);
+            this.pnlBoard.Controls.Add(this.pbxSix);
+            this.pnlBoard.Controls.Add(this.pbxFive);
+            this.pnlBoard.Controls.Add(this.pbxFour);
+            this.pnlBoard.Controls.Add(this.pbxThree);
+            this.pnlBoard.Controls.Add(this.pbxTwo);
+            this.pnlBoard.Controls.Add(this.pbxOne);
+            this.pnlBoard.Location = new System.Drawing.Point(6, 31);
+            this.pnlBoard.Name = "pnlBoard";
+            this.pnlBoard.Size = new System.Drawing.Size(480, 485);
+            this.pnlBoard.TabIndex = 0;
             // 
             // pbxNine
             // 
@@ -179,6 +184,8 @@ namespace TicTacChess_88130
             this.pbxNine.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbxNine.TabIndex = 8;
             this.pbxNine.TabStop = false;
+            this.pbxNine.DragDrop += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragDrop);
+            this.pbxNine.DragOver += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragOver);
             // 
             // pbxEight
             // 
@@ -190,6 +197,8 @@ namespace TicTacChess_88130
             this.pbxEight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbxEight.TabIndex = 7;
             this.pbxEight.TabStop = false;
+            this.pbxEight.DragDrop += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragDrop);
+            this.pbxEight.DragOver += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragOver);
             // 
             // pbxSeven
             // 
@@ -201,6 +210,8 @@ namespace TicTacChess_88130
             this.pbxSeven.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbxSeven.TabIndex = 6;
             this.pbxSeven.TabStop = false;
+            this.pbxSeven.DragDrop += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragDrop);
+            this.pbxSeven.DragOver += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragOver);
             // 
             // pbxSix
             // 
@@ -212,6 +223,8 @@ namespace TicTacChess_88130
             this.pbxSix.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbxSix.TabIndex = 5;
             this.pbxSix.TabStop = false;
+            this.pbxSix.DragDrop += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragDrop);
+            this.pbxSix.DragOver += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragOver);
             // 
             // pbxFive
             // 
@@ -223,6 +236,8 @@ namespace TicTacChess_88130
             this.pbxFive.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbxFive.TabIndex = 4;
             this.pbxFive.TabStop = false;
+            this.pbxFive.DragDrop += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragDrop);
+            this.pbxFive.DragOver += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragOver);
             // 
             // pbxFour
             // 
@@ -234,6 +249,8 @@ namespace TicTacChess_88130
             this.pbxFour.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbxFour.TabIndex = 3;
             this.pbxFour.TabStop = false;
+            this.pbxFour.DragDrop += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragDrop);
+            this.pbxFour.DragOver += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragOver);
             // 
             // pbxThree
             // 
@@ -245,6 +262,8 @@ namespace TicTacChess_88130
             this.pbxThree.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbxThree.TabIndex = 2;
             this.pbxThree.TabStop = false;
+            this.pbxThree.DragDrop += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragDrop);
+            this.pbxThree.DragOver += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragOver);
             // 
             // pbxTwo
             // 
@@ -256,6 +275,8 @@ namespace TicTacChess_88130
             this.pbxTwo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbxTwo.TabIndex = 1;
             this.pbxTwo.TabStop = false;
+            this.pbxTwo.DragDrop += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragDrop);
+            this.pbxTwo.DragOver += new System.Windows.Forms.DragEventHandler(this.pcbBoard_DragOver);
             // 
             // btnExitApplication
             // 
@@ -305,7 +326,7 @@ namespace TicTacChess_88130
             ((System.ComponentModel.ISupportInitialize)(this.pbxQueen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxOne)).EndInit();
             this.gbxBoard.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
+            this.pnlBoard.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbxNine)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxSeven)).EndInit();
@@ -328,7 +349,7 @@ namespace TicTacChess_88130
         private System.Windows.Forms.RadioButton rbtBlack;
         private System.Windows.Forms.RadioButton rbtWhite;
         private System.Windows.Forms.GroupBox gbxBoard;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnlBoard;
         private System.Windows.Forms.PictureBox pbxNine;
         private System.Windows.Forms.PictureBox pbxEight;
         private System.Windows.Forms.PictureBox pbxSeven;
