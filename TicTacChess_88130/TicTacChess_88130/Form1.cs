@@ -12,17 +12,20 @@ namespace TicTacChess_88130
 {
     public partial class Form1 : Form
     {
-
-        string currentColor = "White";
-
+        GameManagement myGameManagement;
+        
         PictureBox currentPictureBox = null;
         PictureBox newPictureBox = null;        
 
         public Form1()
         {
             InitializeComponent();
+
+            SetUpData();
             PictureBoxesAllowDrop();
         }
+
+        #region StartUp
 
         /// <summary>
         /// Allows dropping images on the pictureboxes in the board
@@ -34,19 +37,64 @@ namespace TicTacChess_88130
                 pictureBox.AllowDrop = true;
             }
         }
-        
+
+        private void SetUpData()
+        {
+            myGameManagement = new GameManagement();
+
+            SetUpPieces();
+            SetUpPlayers();
+        }
+
+        private void SetUpPieces()
+        {
+            string[] pieceTypes = new string[] { "Queen", "Rook", "Knight" };
+            int[] startingPositions = new int[] { 1, 2, 3 };
+
+            string currentColor = "White";
+
+            for (int count = 0; count < 6; count++)
+            {
+                string pieceType = "";
+                if (count < 3)
+                {                    
+                    pieceType = pieceTypes[count];                    
+                }
+                else
+                {
+                    pieceType = pieceTypes[count - 3];
+                    currentColor = "Black";
+                    startingPositions = new int[] { 7, 8, 9 };
+                }
+                
+                Piece newPiece = new Piece(pieceType, currentColor, startingPositions);
+                myGameManagement.AddPiece(newPiece);
+            }
+        }
+
+        private void SetUpPlayers()
+        {
+            Player newPlayer = new Player(myGameManagement.GetPiecesOfColor("White"));
+            myGameManagement.AddPlayer(newPlayer);
+
+            newPlayer = new Player(myGameManagement.GetPiecesOfColor("Black"));
+            myGameManagement.AddPlayer(newPlayer);
+        }
+
+        #endregion
+
         #region ShowCorrectPieces
 
         private void rbtAny_CheckedChanged(object sender, EventArgs e)        
         {
             if (rbtBlack.Checked == true)
             {
-                currentColor = "Black";
+                myGameManagement.ChangeColor("Black");
                 ShowBlackPieces();
             }
             else if (rbtWhite.Checked == true)
             {
-                currentColor = "White";
+                myGameManagement.ChangeColor("White");
                 ShowWhitePieces();
             }
         }
@@ -87,6 +135,7 @@ namespace TicTacChess_88130
             currentPictureBox = (PictureBox)sender;
             if( currentPictureBox.BackColor != Color.Red)
             {
+                ShowOpenPositions();
                 currentPictureBox.DoDragDrop(currentPictureBox.Image, DragDropEffects.Copy);
             }            
         }
@@ -124,11 +173,12 @@ namespace TicTacChess_88130
 
         #region DefaultFunctions
 
-        private void ShowPossibleSpaces()
+        private void ShowOpenPositions()
         {
-            if (currentColor == "White")
+            int[] allStartingPositions =  myGameManagement.GetStartingPositions();
+            foreach (int position in allStartingPositions)
             {
-                
+
             }
         }
 
