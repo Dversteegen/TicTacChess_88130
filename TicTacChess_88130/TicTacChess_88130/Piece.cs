@@ -5,9 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TicTacChess_88130
-{
+{    
     class Piece
     {
+        //TODO: Check if I need both position variables
         private string type;
         private string color;
         private int currentPosition;
@@ -26,6 +27,11 @@ namespace TicTacChess_88130
         public string GetPieceColor()
         {
             return color;
+        }
+
+        public string GetPieceType()
+        {
+            return type;
         }
 
         public int[] GetStartPositions()
