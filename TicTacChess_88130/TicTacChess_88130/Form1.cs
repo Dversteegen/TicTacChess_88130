@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TicTacChess_88130
@@ -132,11 +128,21 @@ namespace TicTacChess_88130
 
             if (newPictureBox.Image == null && newPictureBox.BackColor == Color.Green)
             {
-                currentPictureBox.BackColor = Color.Red;
-                RegisterMove(newPictureBox.Name);
+                if (myGameManagement.GetGameState() == "setUp")
+                {
+                    currentPictureBox.BackColor = Color.Red;
+                    RegisterMove(newPictureBox.Name);
+                }
+                else
+                {
+                    currentPictureBox.Image = null;
+                    RegisterMove(newPictureBox.Name);
+                }
+                
                 Image newPicture = (Bitmap)e.Data.GetData(DataFormats.Bitmap);
                 newPictureBox.Image = newPicture;
             }
+
             MakeBoardWhite();
         }
 
@@ -255,11 +261,19 @@ namespace TicTacChess_88130
         /// <param name="pictureBoxName"></param>
         private void RegisterMove(string pictureBoxName)
         {
-            int indexOfPictureBox = GetIndexOfPictureBox(pictureBoxName);
-            myGameManagement.UpdateSquare(indexOfPictureBox, currentPictureBox.Name);
-            if (myGameManagement.CanGameStart() == true)
+            int indexOfNewPictureBox = GetIndexOfPictureBox(pictureBoxName);
+            if (myGameManagement.GetGameState() == "setUp")
+            {                
+                myGameManagement.UpdateStartSquare(indexOfNewPictureBox, currentPictureBox.Name);
+                if (myGameManagement.CanGameStart() == true)
+                {
+                    UpdateStatusLabel();
+                }
+            }
+            else if (myGameManagement.GetGameState() == "playing")
             {
-                UpdateStatusLabel();
+                int indexOfOldPictureBox = GetIndexOfPictureBox(currentPictureBox.Name);
+                myGameManagement.UpdatePlaySquare(indexOfNewPictureBox, indexOfOldPictureBox);
             }
         }
 
@@ -333,17 +347,23 @@ namespace TicTacChess_88130
         private void pbxSquare_MouseDown(object sender, MouseEventArgs e)
         {
             currentPictureBox = (PictureBox)sender;
-            if (currentPictureBox.BackColor != Color.Red)
+            if (currentPictureBox.Image != null)
             {
-                //ShowOpenStartingPositions();
+                ShowOpenPositions();
                 currentPictureBox.DoDragDrop(currentPictureBox.Image, DragDropEffects.Copy);
             }
         }
 
-        private void ShowAvailablePositions()
+        /// <summary>
+        /// Shows all possible positions the chosen piece can move to
+        /// </summary>
+        private void ShowOpenPositions()
         {
             List<PictureBox> allBoardPictureBoxes = GetAllBoardPictureBoxes();
-            int[] allStartingPositions = myGameManagement.GetAllAvailablePositions();
+            int index = allBoardPictureBoxes.FindIndex(pictureBox => pictureBox.Name == currentPictureBox.Name);
+            Piece currentPiece = myGameManagement.GetCurrentPiece(index);
+
+            int[] allStartingPositions = myGameManagement.GetAllAvailablePositions(index, currentPiece);
 
             foreach (int position in allStartingPositions)
             {
@@ -358,7 +378,7 @@ namespace TicTacChess_88130
         private void btnRestartGame_Click(object sender, EventArgs e)
         {
             RestartSquares();
-            
+
             foreach (PictureBox square in pnlBoard.Controls)
             {
                 square.Image = null;
@@ -384,6 +404,6 @@ namespace TicTacChess_88130
             Application.Exit();
         }
 
-        #endregion        
+        #endregion
     }
 }

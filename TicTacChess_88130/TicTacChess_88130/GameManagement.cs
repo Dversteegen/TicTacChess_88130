@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TicTacChess_88130
 {
@@ -10,18 +7,18 @@ namespace TicTacChess_88130
     {
         private List<Square> allSquares;
         private List<Piece> allPieces;
-        //private List<Player> allPlayers;
 
         private string currentColor;
+        private string gameState;
         private bool allPiecesSet;
 
         public GameManagement()
         {
             currentColor = "White";
+            gameState = "setUp";
 
             allSquares = new List<Square>();
             allPieces = new List<Piece>();
-            //allPlayers = new List<Player>();
         }
 
         #region StartUp
@@ -89,11 +86,11 @@ namespace TicTacChess_88130
             int[] currentStartingPositions;
             if (currentColor == "White")
             {
-                currentStartingPositions = new int[] { 0, 1, 2 };
+                currentStartingPositions = new int[] { 6, 7, 8 };
             }
             else
             {
-                currentStartingPositions = new int[] { 6, 7, 8 };
+                currentStartingPositions = new int[] { 0, 1, 2 };
             }
 
             int[] allOpenStartingPositions = allOpenPosition.Intersect(currentStartingPositions).Select(position => position).ToArray();
@@ -105,7 +102,7 @@ namespace TicTacChess_88130
         /// </summary>
         /// <param name="indexOfPosition"></param>
         /// <param name="pictureBoxName"></param>
-        public void UpdateSquare(int indexOfPosition, string pictureBoxName)
+        public void UpdateStartSquare(int indexOfPosition, string pictureBoxName)
         {
             string pieceType = pictureBoxName.Substring(3);
             Piece currentPiece = allPieces.Where(piece => piece.GetPieceColor() == currentColor && piece.GetPieceType() == pieceType).Single();
@@ -124,6 +121,7 @@ namespace TicTacChess_88130
             if (allSetPieces.Count == 6)
             {
                 allPiecesSet = true;
+                gameState = "playing";
             }
             else
             {
@@ -138,14 +136,249 @@ namespace TicTacChess_88130
 
         #endregion
 
-        #region InGame
+        #region InGame        
 
-        public int[] GetAllAvailablePositions()
+        /// <summary>
+        /// Returns the piece on the square belonging to the given index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public Piece GetCurrentPiece(int index)
         {
-            return allSquares
-                .Where(square => square.GetCurrentPiece() == null)
-                .Select(square => square.GetSquarePosition())
-                .ToArray();
+            return allSquares[index].GetCurrentPiece();
+        }
+
+        #region GetPositions
+
+        /// <summary>
+        /// Returns all the possible squares a piece can move to
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="currentPiece"></param>
+        /// <returns></returns>
+        public int[] GetAllAvailablePositions(int index, Piece currentPiece)
+        {
+            switch (currentPiece.GetPieceType())
+            {
+                case "Queen":
+                    return GetAvailablePositionsForQueen(index);
+
+                case "Rook":
+                    return GetAvailablePositionsForRook(index);
+
+                case "Knight":
+                    return GetAvailablePositionsForKnight(index);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Returns all the possible positions the queen at the given index can move to
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public int[] GetAvailablePositionsForQueen(int index)
+        {
+            if ((index == 0 || index == 2 || index == 6 || index == 8) && CheckSquare(index, 4) == true)
+            {
+                return GetHorizontalPositions(index).Concat(GetVerticalPositions(index)).Except(GetAllTakenSqaures()).ToArray(); ;
+            }
+            else
+            {
+                return GetHorizontalPositions(index).Concat(GetVerticalPositions(index)).Concat(GetDiagonalPositions(index)).Except(GetAllTakenSqaures()).ToArray(); ;
+            }
+
+        }
+
+        /// <summary>
+        /// Returns all the possible positions the Rook at the given index can move to
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public int[] GetAvailablePositionsForRook(int index)
+        {
+            return GetHorizontalPositions(index).Concat(GetVerticalPositions(index)).Except(GetAllTakenSqaures()).ToArray();
+        }
+
+        /// <summary>
+        /// Returns all the possible positions the knight at the given index can move to
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public int[] GetAvailablePositionsForKnight(int index)
+        {
+            return GetKnightPositions(index).Except(GetAllTakenSqaures()).ToArray();
+        }
+
+        /// <summary>
+        /// Returns an array of indexes which already have a piece on it
+        /// </summary>
+        /// <returns></returns>
+        public int[] GetAllTakenSqaures()
+        {
+            return allSquares.Where(square => square.GetCurrentPiece() != null).Select(square => square.GetSquarePosition()).ToArray();
+        }
+
+        /// <summary>
+        /// Returns all the possible indexes where a piece can move to from the passed index horizontally
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public int[] GetHorizontalPositions(int index)
+        {
+            if (index < 3)
+            {
+                if (CheckSquare(index, 1) == false)
+                {
+                    return new int[] { 0, 1, 2 };
+                }
+            }
+            else if (index < 6)
+            {
+                if (CheckSquare(index, 4) == false)
+                {
+                    return new int[] { 3, 4, 5 };
+                }
+            }
+            else if (CheckSquare(index, 7) == false)
+            {
+                return new int[] { 6, 7, 8 };
+            }
+            return new int[0];
+        }
+
+        /// <summary>
+        /// Returns all the possible indexes where a piece can move to from the passed index vertically
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public int[] GetVerticalPositions(int index)
+        {
+            if (index % 3 == 0)
+            {
+                if (CheckSquare(index, 3) == false)
+                {
+                    return new int[] { 0, 3, 6 };
+                }
+            }
+            else if (index % 3 == 1)
+            {
+                if (CheckSquare(index, 4) == false)
+                {
+                    return new int[] { 1, 4, 7 };
+                }
+            }
+            else if (CheckSquare(index, 5) == false)
+            {
+                return new int[] { 2, 5, 8 };
+            }
+            return new int[0];
+        }
+
+        /// <summary>
+        /// Returns all the possible indexes where a piece can move to from the passed index diagonally
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public int[] GetDiagonalPositions(int index)
+        {
+            switch (index)
+            {
+                case 0:
+                    return new int[] { index + 4, index + 8 };
+
+                case 1:
+                case 2:
+                    return new int[] { index + 2, index + 4 };
+
+                case 3:
+                    return new int[] { index - 2, index + 4 };
+
+                case 4:
+                    return new int[] { index - 4, index - 2, index + 2, index + 4 };
+
+                case 5:
+                    return new int[] { index - 4, index + 2 };
+
+                case 6:
+                case 7:
+                    return new int[] { index - 4, index - 2 };
+
+                case 8:
+                    return new int[] { index - 8, index - 4 };
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Returns all the possible indexes where a piece can move to if it's a knight
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public int[] GetKnightPositions(int index)
+        {
+            switch (index)
+            {
+                case 0:
+                case 1:
+                    return new int[] { index + 5, index + 7 };
+
+                case 2:
+                    return new int[] { index + 1, index + 5 };
+
+                case 3:
+                    return new int[] { index - 1, index + 5 };
+
+                case 5:
+                    return new int[] { index - 5, index + 1 };
+
+                case 6:
+                    return new int[] { index - 5, index - 1 };
+
+                case 7:
+                case 8:
+                    return new int[] { index - 7, index - 5 };
+            }
+            return null;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Returns there's a piece at the square belonging to the index
+        /// </summary>
+        /// <param name="currentIndex"></param>
+        /// <param name="blockinIndex"></param>
+        /// <returns></returns>
+        private bool CheckSquare(int currentIndex, int blockinIndex)
+        {
+            if (currentIndex != blockinIndex)
+            {
+                if (allSquares[blockinIndex].GetCurrentPiece() != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Updates the square the piece has moved to
+        /// </summary>
+        /// <param name="indexOfPosition"></param>
+        /// <param name="indexOfOldPosition"></param>
+        public void UpdatePlaySquare(int indexOfPosition, int indexOfOldPosition)
+        {
+            Piece currentPiece = allSquares.Where(square => square.GetSquarePosition() == indexOfOldPosition).Select(square => square.GetCurrentPiece()).Single();
+            allSquares[indexOfOldPosition].ResetSquare();
+            allSquares[indexOfPosition].UpdatePiece(currentPiece);
         }
 
         #endregion
@@ -158,10 +391,18 @@ namespace TicTacChess_88130
             {
                 square.ResetSquare();
             }
+            gameState = "setUp";
             allPiecesSet = false;
         }
 
+        #endregion
 
+        #region GameState
+
+        public string GetGameState()
+        {
+            return gameState;
+        }
 
         #endregion
 

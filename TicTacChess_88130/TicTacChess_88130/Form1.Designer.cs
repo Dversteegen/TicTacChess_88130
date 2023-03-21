@@ -37,14 +37,14 @@ namespace TicTacChess_88130
             this.rbtWhite = new System.Windows.Forms.RadioButton();
             this.gbxBoard = new System.Windows.Forms.GroupBox();
             this.pnlBoard = new System.Windows.Forms.Panel();
-            this.pbxNine = new System.Windows.Forms.PictureBox();
-            this.pbxEight = new System.Windows.Forms.PictureBox();
-            this.pbxSeven = new System.Windows.Forms.PictureBox();
-            this.pbxSix = new System.Windows.Forms.PictureBox();
-            this.pbxFive = new System.Windows.Forms.PictureBox();
-            this.pbxFour = new System.Windows.Forms.PictureBox();
-            this.pbxThree = new System.Windows.Forms.PictureBox();
             this.pbxTwo = new System.Windows.Forms.PictureBox();
+            this.pbxThree = new System.Windows.Forms.PictureBox();
+            this.pbxFour = new System.Windows.Forms.PictureBox();
+            this.pbxFive = new System.Windows.Forms.PictureBox();
+            this.pbxSix = new System.Windows.Forms.PictureBox();
+            this.pbxSeven = new System.Windows.Forms.PictureBox();
+            this.pbxEight = new System.Windows.Forms.PictureBox();
+            this.pbxNine = new System.Windows.Forms.PictureBox();
             this.btnExitApplication = new System.Windows.Forms.Button();
             this.btnRestartGame = new System.Windows.Forms.Button();
             this.lblGameStatus = new System.Windows.Forms.Label();
@@ -54,14 +54,14 @@ namespace TicTacChess_88130
             ((System.ComponentModel.ISupportInitialize)(this.pbxOne)).BeginInit();
             this.gbxBoard.SuspendLayout();
             this.pnlBoard.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxNine)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxEight)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxSeven)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxSix)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxFive)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxFour)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxThree)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxTwo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxThree)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxFour)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxFive)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxSix)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxSeven)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxEight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxNine)).BeginInit();
             this.SuspendLayout();
             // 
             // pbxRook
@@ -115,6 +115,7 @@ namespace TicTacChess_88130
             this.pbxOne.TabStop = false;
             this.pbxOne.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragDrop);
             this.pbxOne.DragOver += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragOver);
+            this.pbxOne.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbxSquare_MouseDown);
             // 
             // rbtBlack
             // 
@@ -161,110 +162,19 @@ namespace TicTacChess_88130
             // pnlBoard
             // 
             this.pnlBoard.BackColor = System.Drawing.Color.Black;
-            this.pnlBoard.Controls.Add(this.pbxNine);
-            this.pnlBoard.Controls.Add(this.pbxEight);
-            this.pnlBoard.Controls.Add(this.pbxSeven);
-            this.pnlBoard.Controls.Add(this.pbxSix);
-            this.pnlBoard.Controls.Add(this.pbxFive);
-            this.pnlBoard.Controls.Add(this.pbxFour);
-            this.pnlBoard.Controls.Add(this.pbxThree);
-            this.pnlBoard.Controls.Add(this.pbxTwo);
             this.pnlBoard.Controls.Add(this.pbxOne);
+            this.pnlBoard.Controls.Add(this.pbxTwo);
+            this.pnlBoard.Controls.Add(this.pbxThree);
+            this.pnlBoard.Controls.Add(this.pbxFour);
+            this.pnlBoard.Controls.Add(this.pbxFive);
+            this.pnlBoard.Controls.Add(this.pbxSix);
+            this.pnlBoard.Controls.Add(this.pbxSeven);
+            this.pnlBoard.Controls.Add(this.pbxEight);
+            this.pnlBoard.Controls.Add(this.pbxNine);
             this.pnlBoard.Location = new System.Drawing.Point(6, 31);
             this.pnlBoard.Name = "pnlBoard";
             this.pnlBoard.Size = new System.Drawing.Size(480, 485);
             this.pnlBoard.TabIndex = 0;
-            // 
-            // pbxNine
-            // 
-            this.pbxNine.BackColor = System.Drawing.Color.White;
-            this.pbxNine.Location = new System.Drawing.Point(325, 325);
-            this.pbxNine.Margin = new System.Windows.Forms.Padding(5);
-            this.pbxNine.Name = "pbxNine";
-            this.pbxNine.Size = new System.Drawing.Size(150, 150);
-            this.pbxNine.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbxNine.TabIndex = 8;
-            this.pbxNine.TabStop = false;
-            this.pbxNine.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragDrop);
-            this.pbxNine.DragOver += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragOver);
-            // 
-            // pbxEight
-            // 
-            this.pbxEight.BackColor = System.Drawing.Color.White;
-            this.pbxEight.Location = new System.Drawing.Point(165, 325);
-            this.pbxEight.Margin = new System.Windows.Forms.Padding(5);
-            this.pbxEight.Name = "pbxEight";
-            this.pbxEight.Size = new System.Drawing.Size(150, 150);
-            this.pbxEight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbxEight.TabIndex = 7;
-            this.pbxEight.TabStop = false;
-            this.pbxEight.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragDrop);
-            this.pbxEight.DragOver += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragOver);
-            // 
-            // pbxSeven
-            // 
-            this.pbxSeven.BackColor = System.Drawing.Color.White;
-            this.pbxSeven.Location = new System.Drawing.Point(5, 325);
-            this.pbxSeven.Margin = new System.Windows.Forms.Padding(5);
-            this.pbxSeven.Name = "pbxSeven";
-            this.pbxSeven.Size = new System.Drawing.Size(150, 150);
-            this.pbxSeven.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbxSeven.TabIndex = 6;
-            this.pbxSeven.TabStop = false;
-            this.pbxSeven.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragDrop);
-            this.pbxSeven.DragOver += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragOver);
-            // 
-            // pbxSix
-            // 
-            this.pbxSix.BackColor = System.Drawing.Color.White;
-            this.pbxSix.Location = new System.Drawing.Point(325, 165);
-            this.pbxSix.Margin = new System.Windows.Forms.Padding(5);
-            this.pbxSix.Name = "pbxSix";
-            this.pbxSix.Size = new System.Drawing.Size(150, 150);
-            this.pbxSix.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbxSix.TabIndex = 5;
-            this.pbxSix.TabStop = false;
-            this.pbxSix.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragDrop);
-            this.pbxSix.DragOver += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragOver);
-            // 
-            // pbxFive
-            // 
-            this.pbxFive.BackColor = System.Drawing.Color.White;
-            this.pbxFive.Location = new System.Drawing.Point(165, 165);
-            this.pbxFive.Margin = new System.Windows.Forms.Padding(5);
-            this.pbxFive.Name = "pbxFive";
-            this.pbxFive.Size = new System.Drawing.Size(150, 150);
-            this.pbxFive.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbxFive.TabIndex = 4;
-            this.pbxFive.TabStop = false;
-            this.pbxFive.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragDrop);
-            this.pbxFive.DragOver += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragOver);
-            // 
-            // pbxFour
-            // 
-            this.pbxFour.BackColor = System.Drawing.Color.White;
-            this.pbxFour.Location = new System.Drawing.Point(5, 165);
-            this.pbxFour.Margin = new System.Windows.Forms.Padding(5);
-            this.pbxFour.Name = "pbxFour";
-            this.pbxFour.Size = new System.Drawing.Size(150, 150);
-            this.pbxFour.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbxFour.TabIndex = 3;
-            this.pbxFour.TabStop = false;
-            this.pbxFour.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragDrop);
-            this.pbxFour.DragOver += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragOver);
-            // 
-            // pbxThree
-            // 
-            this.pbxThree.BackColor = System.Drawing.Color.White;
-            this.pbxThree.Location = new System.Drawing.Point(325, 5);
-            this.pbxThree.Margin = new System.Windows.Forms.Padding(5);
-            this.pbxThree.Name = "pbxThree";
-            this.pbxThree.Size = new System.Drawing.Size(150, 150);
-            this.pbxThree.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbxThree.TabIndex = 2;
-            this.pbxThree.TabStop = false;
-            this.pbxThree.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragDrop);
-            this.pbxThree.DragOver += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragOver);
             // 
             // pbxTwo
             // 
@@ -278,6 +188,105 @@ namespace TicTacChess_88130
             this.pbxTwo.TabStop = false;
             this.pbxTwo.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragDrop);
             this.pbxTwo.DragOver += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragOver);
+            this.pbxTwo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbxSquare_MouseDown);
+            // 
+            // pbxThree
+            // 
+            this.pbxThree.BackColor = System.Drawing.Color.White;
+            this.pbxThree.Location = new System.Drawing.Point(325, 5);
+            this.pbxThree.Margin = new System.Windows.Forms.Padding(5);
+            this.pbxThree.Name = "pbxThree";
+            this.pbxThree.Size = new System.Drawing.Size(150, 150);
+            this.pbxThree.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbxThree.TabIndex = 2;
+            this.pbxThree.TabStop = false;
+            this.pbxThree.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragDrop);
+            this.pbxThree.DragOver += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragOver);
+            this.pbxThree.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbxSquare_MouseDown);
+            // 
+            // pbxFour
+            // 
+            this.pbxFour.BackColor = System.Drawing.Color.White;
+            this.pbxFour.Location = new System.Drawing.Point(5, 165);
+            this.pbxFour.Margin = new System.Windows.Forms.Padding(5);
+            this.pbxFour.Name = "pbxFour";
+            this.pbxFour.Size = new System.Drawing.Size(150, 150);
+            this.pbxFour.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbxFour.TabIndex = 3;
+            this.pbxFour.TabStop = false;
+            this.pbxFour.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragDrop);
+            this.pbxFour.DragOver += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragOver);
+            this.pbxFour.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbxSquare_MouseDown);
+            // 
+            // pbxFive
+            // 
+            this.pbxFive.BackColor = System.Drawing.Color.White;
+            this.pbxFive.Location = new System.Drawing.Point(165, 165);
+            this.pbxFive.Margin = new System.Windows.Forms.Padding(5);
+            this.pbxFive.Name = "pbxFive";
+            this.pbxFive.Size = new System.Drawing.Size(150, 150);
+            this.pbxFive.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbxFive.TabIndex = 4;
+            this.pbxFive.TabStop = false;
+            this.pbxFive.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragDrop);
+            this.pbxFive.DragOver += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragOver);
+            this.pbxFive.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbxSquare_MouseDown);
+            // 
+            // pbxSix
+            // 
+            this.pbxSix.BackColor = System.Drawing.Color.White;
+            this.pbxSix.Location = new System.Drawing.Point(325, 165);
+            this.pbxSix.Margin = new System.Windows.Forms.Padding(5);
+            this.pbxSix.Name = "pbxSix";
+            this.pbxSix.Size = new System.Drawing.Size(150, 150);
+            this.pbxSix.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbxSix.TabIndex = 5;
+            this.pbxSix.TabStop = false;
+            this.pbxSix.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragDrop);
+            this.pbxSix.DragOver += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragOver);
+            this.pbxSix.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbxSquare_MouseDown);
+            // 
+            // pbxSeven
+            // 
+            this.pbxSeven.BackColor = System.Drawing.Color.White;
+            this.pbxSeven.Location = new System.Drawing.Point(5, 325);
+            this.pbxSeven.Margin = new System.Windows.Forms.Padding(5);
+            this.pbxSeven.Name = "pbxSeven";
+            this.pbxSeven.Size = new System.Drawing.Size(150, 150);
+            this.pbxSeven.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbxSeven.TabIndex = 6;
+            this.pbxSeven.TabStop = false;
+            this.pbxSeven.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragDrop);
+            this.pbxSeven.DragOver += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragOver);
+            this.pbxSeven.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbxSquare_MouseDown);
+            // 
+            // pbxEight
+            // 
+            this.pbxEight.BackColor = System.Drawing.Color.White;
+            this.pbxEight.Location = new System.Drawing.Point(165, 325);
+            this.pbxEight.Margin = new System.Windows.Forms.Padding(5);
+            this.pbxEight.Name = "pbxEight";
+            this.pbxEight.Size = new System.Drawing.Size(150, 150);
+            this.pbxEight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbxEight.TabIndex = 7;
+            this.pbxEight.TabStop = false;
+            this.pbxEight.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragDrop);
+            this.pbxEight.DragOver += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragOver);
+            this.pbxEight.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbxSquare_MouseDown);
+            // 
+            // pbxNine
+            // 
+            this.pbxNine.BackColor = System.Drawing.Color.White;
+            this.pbxNine.Location = new System.Drawing.Point(325, 325);
+            this.pbxNine.Margin = new System.Windows.Forms.Padding(5);
+            this.pbxNine.Name = "pbxNine";
+            this.pbxNine.Size = new System.Drawing.Size(150, 150);
+            this.pbxNine.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbxNine.TabIndex = 8;
+            this.pbxNine.TabStop = false;
+            this.pbxNine.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragDrop);
+            this.pbxNine.DragOver += new System.Windows.Forms.DragEventHandler(this.pbxSquare_DragOver);
+            this.pbxNine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbxSquare_MouseDown);
             // 
             // btnExitApplication
             // 
@@ -334,21 +343,21 @@ namespace TicTacChess_88130
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "rrrr";
+            this.Text = "TicTacChess";
             ((System.ComponentModel.ISupportInitialize)(this.pbxRook)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxKnight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxQueen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxOne)).EndInit();
             this.gbxBoard.ResumeLayout(false);
             this.pnlBoard.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbxNine)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxEight)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxSeven)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxSix)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxFive)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxFour)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxThree)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxTwo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxThree)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxFour)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxFive)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxSix)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxSeven)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxEight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxNine)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

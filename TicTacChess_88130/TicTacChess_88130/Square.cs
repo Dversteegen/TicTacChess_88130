@@ -17,6 +17,8 @@ namespace TicTacChess_88130
             currentPiece = piece;
         }
 
+        #region GetFunctions
+
         public int GetSquarePosition()
         {
             return squarePosition;
@@ -25,8 +27,11 @@ namespace TicTacChess_88130
         public Piece GetCurrentPiece()
         {
             return currentPiece;
-        }
+        }        
 
+        #endregion
+
+        #region Methods
         public void UpdatePiece(Piece newPiece)
         {
             currentPiece = newPiece;
@@ -36,5 +41,7 @@ namespace TicTacChess_88130
         {
             currentPiece = null;
         }
+
+        #endregion
     }
 }
