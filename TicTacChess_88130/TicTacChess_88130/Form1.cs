@@ -40,7 +40,7 @@ namespace TicTacChess_88130
 
             SetUpPieces();
             SetUpSquares();
-            //SetUpPlayers();            
+            SetUpWinPositions();
         }
 
         /// <summary>
@@ -49,9 +49,9 @@ namespace TicTacChess_88130
         private void SetUpPieces()
         {
             string[] pieceTypes = new string[] { "Queen", "Rook", "Knight" };
-            int[] startingPositions = new int[] { 1, 2, 3 };
+            //int[] startingPositions = new int[] { 1, 2, 3 };
 
-            string currentColor = "White";
+            string currentColor = "white";
 
             for (int count = 0; count < 6; count++)
             {
@@ -63,25 +63,13 @@ namespace TicTacChess_88130
                 else
                 {
                     pieceType = pieceTypes[count - 3];
-                    currentColor = "Black";
-                    startingPositions = new int[] { 7, 8, 9 };
+                    currentColor = "black";
+                    //startingPositions = new int[] { 7, 8, 9 };
                 }
 
-                Piece newPiece = new Piece(pieceType, currentColor, startingPositions);
+                Piece newPiece = new Piece(pieceType, currentColor);
                 myGameManagement.AddPiece(newPiece);
             }
-        }
-
-        /// <summary>
-        /// Defines both players
-        /// </summary>
-        private void SetUpPlayers()
-        {
-            //Player newPlayer = new Player(myGameManagement.GetPiecesOfColor("White"));
-            //myGameManagement.AddPlayer(newPlayer);
-
-            //newPlayer = new Player(myGameManagement.GetPiecesOfColor("Black"));
-            //myGameManagement.AddPlayer(newPlayer);
         }
 
         /// <summary>
@@ -94,6 +82,31 @@ namespace TicTacChess_88130
                 Square newSquare = new Square(count, null);
                 myGameManagement.AddSquare(newSquare);
             }
+        }
+
+        /// <summary>
+        /// Defines all the possible win positions
+        /// </summary>
+        private void SetUpWinPositions()
+        {
+            WinPosition newWinposition = new WinPosition(0, 1, 2);
+            myGameManagement.AddWinPosition(newWinposition);
+            newWinposition = new WinPosition(3, 4, 5);
+            myGameManagement.AddWinPosition(newWinposition);
+            newWinposition = new WinPosition(6, 7, 8);
+            myGameManagement.AddWinPosition(newWinposition);
+
+            newWinposition = new WinPosition(0, 3, 6);
+            myGameManagement.AddWinPosition(newWinposition);
+            newWinposition = new WinPosition(1, 4, 7);
+            myGameManagement.AddWinPosition(newWinposition);
+            newWinposition = new WinPosition(2, 5, 8);
+            myGameManagement.AddWinPosition(newWinposition);
+
+            newWinposition = new WinPosition(0, 4, 8);
+            myGameManagement.AddWinPosition(newWinposition);
+            newWinposition = new WinPosition(2, 4, 6);
+            myGameManagement.AddWinPosition(newWinposition);
         }
 
         #endregion                
@@ -137,8 +150,16 @@ namespace TicTacChess_88130
                 {
                     currentPictureBox.Image = null;
                     RegisterMove(newPictureBox.Name);
+                    if (myGameManagement.GetGameState() == "finished")
+                    {
+                        UpdateStatusLabel("finished");
+                    }
+                    else
+                    {
+                        UpdateStatusLabel("moved");
+                    }
                 }
-                
+
                 Image newPicture = (Bitmap)e.Data.GetData(DataFormats.Bitmap);
                 newPictureBox.Image = newPicture;
             }
@@ -167,12 +188,12 @@ namespace TicTacChess_88130
         {
             if (rbtBlack.Checked == true)
             {
-                myGameManagement.ChangeColor("Black");
+                myGameManagement.ChangeColor("black");
                 ShowBlackPieces();
             }
             else if (rbtWhite.Checked == true)
             {
-                myGameManagement.ChangeColor("White");
+                myGameManagement.ChangeColor("white");
                 ShowWhitePieces();
             }
         }
@@ -263,11 +284,11 @@ namespace TicTacChess_88130
         {
             int indexOfNewPictureBox = GetIndexOfPictureBox(pictureBoxName);
             if (myGameManagement.GetGameState() == "setUp")
-            {                
+            {
                 myGameManagement.UpdateStartSquare(indexOfNewPictureBox, currentPictureBox.Name);
                 if (myGameManagement.CanGameStart() == true)
                 {
-                    UpdateStatusLabel();
+                    UpdateStatusLabel("ready");
                 }
             }
             else if (myGameManagement.GetGameState() == "playing")
@@ -310,10 +331,34 @@ namespace TicTacChess_88130
             return allBoardPictureBoxes;
         }
 
-        private void UpdateStatusLabel()
+        private void UpdateStatusLabel(string status)
         {
-            lblGameStatus.Text = "White play";
-            //TODO: Do something about the color maybe
+            string statusEnd = " to play";
+
+            switch(status)
+            {
+                case "ready":
+                    myGameManagement.ChangeColor("white");
+                    break;
+
+                case "moved":
+                    if (myGameManagement.GetCurrentColor() == "white")
+                    {
+                        myGameManagement.ChangeColor("black");
+                    }
+                    else
+                    {
+                        myGameManagement.ChangeColor("white");
+                    }
+                    break;
+
+                case "finished":
+                    statusEnd = " has won the game!";
+                    break;
+            }
+
+            string color = myGameManagement.GetCurrentColor();
+            lblGameStatus.Text = char.ToUpper(color[0]) + color.Substring(1) + statusEnd;
         }
 
         #endregion
@@ -339,6 +384,8 @@ namespace TicTacChess_88130
 
         #region Playing
 
+        #region Moving
+
         /// <summary>
         /// Registers when a picturebox for setting up the pieces is selected
         /// </summary>
@@ -346,11 +393,19 @@ namespace TicTacChess_88130
         /// <param name="e"></param>
         private void pbxSquare_MouseDown(object sender, MouseEventArgs e)
         {
-            currentPictureBox = (PictureBox)sender;
-            if (currentPictureBox.Image != null)
+            if (myGameManagement.GetGameState() == "playing")
             {
-                ShowOpenPositions();
-                currentPictureBox.DoDragDrop(currentPictureBox.Image, DragDropEffects.Copy);
+                currentPictureBox = (PictureBox)sender;
+                int index = GetAllBoardPictureBoxes().FindIndex(pictureBox => pictureBox.Name == currentPictureBox.Name);
+
+                if (myGameManagement.CheckColor(index) == true)
+                {
+                    if (currentPictureBox.Image != null)
+                    {
+                        ShowOpenPositions();
+                        currentPictureBox.DoDragDrop(currentPictureBox.Image, DragDropEffects.Copy);
+                    }
+                }
             }
         }
 
@@ -370,6 +425,8 @@ namespace TicTacChess_88130
                 allBoardPictureBoxes[position].BackColor = Color.Green;
             }
         }
+
+        #endregion        
 
         #endregion
 

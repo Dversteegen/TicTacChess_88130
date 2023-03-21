@@ -7,19 +7,14 @@ using System.Threading.Tasks;
 namespace TicTacChess_88130
 {    
     class Piece
-    {
-        //TODO: Check if I need both position variables
+    {        
         private string type;
-        private string color;
-        private int currentPosition;
-        private int[] startingPositions;
+        private string color;        
 
-        public Piece(string pieceType, string pieceColor, int[] availablePositions)
+        public Piece(string c_type, string c_color)
         {
-            type = pieceType;
-            color = pieceColor;
-            currentPosition = 0;
-            startingPositions = availablePositions;
+            type = c_type;
+            color = c_color;            
         }
 
         #region GetFunctions
@@ -32,12 +27,7 @@ namespace TicTacChess_88130
         public string GetPieceType()
         {
             return type;
-        }
-
-        public int[] GetStartPositions()
-        {
-            return startingPositions;
-        }
+        }        
 
         #endregion
     }

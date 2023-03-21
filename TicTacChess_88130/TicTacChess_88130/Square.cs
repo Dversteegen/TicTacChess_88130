@@ -11,10 +11,10 @@ namespace TicTacChess_88130
         private int squarePosition;
         private Piece currentPiece;
 
-        public Square(int position, Piece piece)
+        public Square(int c_squarePosition, Piece c_piece)
         {
-            squarePosition = position;
-            currentPiece = piece;
+            squarePosition = c_squarePosition;
+            currentPiece = c_piece;
         }
 
         #region GetFunctions

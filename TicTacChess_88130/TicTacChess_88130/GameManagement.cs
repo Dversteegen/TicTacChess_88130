@@ -7,6 +7,7 @@ namespace TicTacChess_88130
     {
         private List<Square> allSquares;
         private List<Piece> allPieces;
+        private List<WinPosition> allWinPositions;
 
         private string currentColor;
         private string gameState;
@@ -14,11 +15,12 @@ namespace TicTacChess_88130
 
         public GameManagement()
         {
-            currentColor = "White";
+            currentColor = "white";
             gameState = "setUp";
 
             allSquares = new List<Square>();
             allPieces = new List<Piece>();
+            allWinPositions = new List<WinPosition>();
         }
 
         #region StartUp
@@ -41,9 +43,13 @@ namespace TicTacChess_88130
             allPieces.Add(newPiece);
         }
 
-        public void AddPlayer(Player newPlayer)
+        /// <summary>
+        /// Adds a win position to the list
+        /// </summary>
+        /// <param name="newWinPosition"></param>
+        public void AddWinPosition(WinPosition newWinPosition)
         {
-            //allPlayers.Add(newPlayer);
+            allWinPositions.Add(newWinPosition);
         }
 
         #endregion
@@ -84,7 +90,7 @@ namespace TicTacChess_88130
                 .Select(square => square.GetSquarePosition());
 
             int[] currentStartingPositions;
-            if (currentColor == "White")
+            if (currentColor == "white")
             {
                 currentStartingPositions = new int[] { 6, 7, 8 };
             }
@@ -379,6 +385,48 @@ namespace TicTacChess_88130
             Piece currentPiece = allSquares.Where(square => square.GetSquarePosition() == indexOfOldPosition).Select(square => square.GetCurrentPiece()).Single();
             allSquares[indexOfOldPosition].ResetSquare();
             allSquares[indexOfPosition].UpdatePiece(currentPiece);
+            CheckBoard();
+        }
+
+        public bool CheckColor(int index)
+        {
+            string color = allSquares[index].GetCurrentPiece().GetPieceColor();
+            if (color == currentColor)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public string GetCurrentColor()
+        {
+            return currentColor;
+        }
+
+        public void CheckBoard()
+        {
+            int[] allCurrentPieces = allSquares.Where(square => square.GetCurrentPiece() != null && square.GetCurrentPiece().GetPieceColor() == currentColor).Select(square => square.GetSquarePosition()).ToArray();
+            int count = 0;
+            //WinPosition currentPosition = new WinPosition(allCurrentPieces[0], allCurrentPieces[1], allCurrentPieces[2]);
+
+            foreach (WinPosition winPosition in allWinPositions)
+            {
+                if (winPosition.GetFirstPosition() == allCurrentPieces[0]
+                    && winPosition.GetSecondPosition() == allCurrentPieces[1]
+                    && winPosition.GetThirdPosition() == allCurrentPieces[2])
+                {
+                    //int index = allWinPositions.IndexOf(currentPosition);
+                    if ((count != 0 && currentColor != "white") || count != 2 && currentColor != "black")
+                    {
+                        gameState = "finished";
+                        break;
+                    }
+                }
+                count++;
+            }
         }
 
         #endregion
@@ -391,6 +439,7 @@ namespace TicTacChess_88130
             {
                 square.ResetSquare();
             }
+            currentColor = "white";
             gameState = "setUp";
             allPiecesSet = false;
         }
