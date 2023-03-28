@@ -6,19 +6,23 @@ using System.Windows.Forms;
 
 namespace TicTacChess_88130
 {
-    public partial class Form1 : Form
+    public partial class Board : Form
     {
-        GameManagement myGameManagement;
+        GameManagement myGameManagement = null;
 
         PictureBox currentPictureBox = null;
         PictureBox newPictureBox = null;
+        ConnectionForm connectionForm = new ConnectionForm();
 
-        public Form1()
+        int[] horizontalPositions = new int[] { 320, 400, 570, 850, 900, 1050, 1330, 1400, 1520 };
+        int[] rotationPositions = new int[] { 20, 135, 245, 0, 110, 200, 0, 95, 175 };
+
+        public Board()
         {
             InitializeComponent();
 
             SetUpData();
-            PictureBoxesAllowDrop();
+            PictureBoxesAllowDrop();            
         }
 
         #region StartUp
@@ -79,7 +83,7 @@ namespace TicTacChess_88130
         {
             for (int count = 0; count < 9; count++)
             {
-                Square newSquare = new Square(count, null);
+                Square newSquare = new Square(count, horizontalPositions[count], rotationPositions[count], null);
                 myGameManagement.AddSquare(newSquare);
             }
         }
@@ -295,6 +299,7 @@ namespace TicTacChess_88130
             {
                 int indexOfOldPictureBox = GetIndexOfPictureBox(currentPictureBox.Name);
                 myGameManagement.UpdatePlaySquare(indexOfNewPictureBox, indexOfOldPictureBox);
+                OperateArm(indexOfOldPictureBox, indexOfNewPictureBox);
             }
         }
 
@@ -426,6 +431,14 @@ namespace TicTacChess_88130
             }
         }
 
+        private void OperateArm(int oldPosition, int newPosition)
+        {
+            Tuple<int, int> previousArmPositions = myGameManagement.GetPositionsForArm(oldPosition);
+            Tuple<int, int> newArmPositions = myGameManagement.GetPositionsForArm(newPosition);
+
+            connectionForm.MovePiece(previousArmPositions, newArmPositions);
+        }
+
         #endregion        
 
         #endregion
@@ -459,6 +472,22 @@ namespace TicTacChess_88130
         private void btnExitApplication_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        #endregion
+
+        #region OpenConnectionForm       
+        
+        private void cbxMakeConnection_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbxMakeConnection.Checked == true)
+            {
+                connectionForm.Show();
+            }
+            else
+            {
+                connectionForm.Hide();
+            }
         }
 
         #endregion

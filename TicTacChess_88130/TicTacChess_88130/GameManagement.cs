@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TicTacChess_88130
@@ -143,6 +144,8 @@ namespace TicTacChess_88130
         #endregion
 
         #region InGame        
+
+        #region Form
 
         /// <summary>
         /// Returns the piece on the square belonging to the given index
@@ -350,6 +353,17 @@ namespace TicTacChess_88130
 
         #endregion
 
+        #endregion
+
+        #region Arm
+
+        public Tuple<int, int> GetPositionsForArm(int index)
+        {
+            return allSquares[index].GetArmPositions();            
+        }
+
+        #endregion
+
         /// <summary>
         /// Returns there's a piece at the square belonging to the index
         /// </summary>
@@ -390,15 +404,23 @@ namespace TicTacChess_88130
 
         public bool CheckColor(int index)
         {
-            string color = allSquares[index].GetCurrentPiece().GetPieceColor();
-            if (color == currentColor)
+            Piece currentPiece = allSquares[index].GetCurrentPiece();
+            if (currentPiece != null)
             {
-                return true;
+                string color = currentPiece.GetPieceColor();
+                if (color != null)
+                {
+                    if (color == currentColor)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
             }
-            else
-            {
-                return false;
-            }
+            return false;            
         }
 
         public string GetCurrentColor()

@@ -9,11 +9,15 @@ namespace TicTacChess_88130
     class Square
     {
         private int squarePosition;
+        private int squareHorizontal;
+        private int squareRotation;
         private Piece currentPiece;
 
-        public Square(int c_squarePosition, Piece c_piece)
+        public Square(int c_squarePosition, int c_squareHorizontal, int c_squareRotation, Piece c_piece)
         {
             squarePosition = c_squarePosition;
+            squareHorizontal = c_squareHorizontal;
+            squareRotation = c_squareRotation;
             currentPiece = c_piece;
         }
 
@@ -28,6 +32,11 @@ namespace TicTacChess_88130
         {
             return currentPiece;
         }        
+
+        public Tuple<int, int> GetArmPositions()
+        {
+            return Tuple.Create(squareHorizontal, squareRotation);
+        }
 
         #endregion
 

@@ -1,7 +1,7 @@
 ﻿
 namespace TicTacChess_88130
 {
-    partial class Form1
+    partial class Board
     {
         /// <summary>
         /// Required designer variable.
@@ -48,6 +48,7 @@ namespace TicTacChess_88130
             this.btnExitApplication = new System.Windows.Forms.Button();
             this.btnRestartGame = new System.Windows.Forms.Button();
             this.lblGameStatus = new System.Windows.Forms.Label();
+            this.cbxMakeConnection = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbxRook)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxKnight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxQueen)).BeginInit();
@@ -68,7 +69,7 @@ namespace TicTacChess_88130
             // 
             this.pbxRook.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.pbxRook.Image = global::TicTacChess_88130.Properties.Resources.White_rook;
-            this.pbxRook.Location = new System.Drawing.Point(15, 268);
+            this.pbxRook.Location = new System.Drawing.Point(14, 330);
             this.pbxRook.Margin = new System.Windows.Forms.Padding(5);
             this.pbxRook.Name = "pbxRook";
             this.pbxRook.Size = new System.Drawing.Size(150, 150);
@@ -81,7 +82,7 @@ namespace TicTacChess_88130
             // 
             this.pbxKnight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.pbxKnight.Image = global::TicTacChess_88130.Properties.Resources.White_knight;
-            this.pbxKnight.Location = new System.Drawing.Point(15, 428);
+            this.pbxKnight.Location = new System.Drawing.Point(14, 490);
             this.pbxKnight.Margin = new System.Windows.Forms.Padding(5);
             this.pbxKnight.Name = "pbxKnight";
             this.pbxKnight.Size = new System.Drawing.Size(150, 150);
@@ -94,7 +95,7 @@ namespace TicTacChess_88130
             // 
             this.pbxQueen.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.pbxQueen.Image = global::TicTacChess_88130.Properties.Resources.White_queen;
-            this.pbxQueen.Location = new System.Drawing.Point(15, 108);
+            this.pbxQueen.Location = new System.Drawing.Point(14, 170);
             this.pbxQueen.Margin = new System.Windows.Forms.Padding(5);
             this.pbxQueen.Name = "pbxQueen";
             this.pbxQueen.Size = new System.Drawing.Size(150, 150);
@@ -122,7 +123,7 @@ namespace TicTacChess_88130
             this.rbtBlack.AutoSize = true;
             this.rbtBlack.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbtBlack.ForeColor = System.Drawing.Color.White;
-            this.rbtBlack.Location = new System.Drawing.Point(15, 62);
+            this.rbtBlack.Location = new System.Drawing.Point(14, 122);
             this.rbtBlack.Margin = new System.Windows.Forms.Padding(5);
             this.rbtBlack.Name = "rbtBlack";
             this.rbtBlack.Size = new System.Drawing.Size(121, 38);
@@ -137,7 +138,7 @@ namespace TicTacChess_88130
             this.rbtWhite.Checked = true;
             this.rbtWhite.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbtWhite.ForeColor = System.Drawing.Color.White;
-            this.rbtWhite.Location = new System.Drawing.Point(15, 14);
+            this.rbtWhite.Location = new System.Drawing.Point(14, 74);
             this.rbtWhite.Margin = new System.Windows.Forms.Padding(5);
             this.rbtWhite.Name = "rbtWhite";
             this.rbtWhite.Size = new System.Drawing.Size(130, 38);
@@ -152,7 +153,7 @@ namespace TicTacChess_88130
             this.gbxBoard.BackColor = System.Drawing.Color.Transparent;
             this.gbxBoard.Controls.Add(this.pnlBoard);
             this.gbxBoard.ForeColor = System.Drawing.Color.White;
-            this.gbxBoard.Location = new System.Drawing.Point(208, 72);
+            this.gbxBoard.Location = new System.Drawing.Point(195, 122);
             this.gbxBoard.Name = "gbxBoard";
             this.gbxBoard.Size = new System.Drawing.Size(491, 522);
             this.gbxBoard.TabIndex = 6;
@@ -292,7 +293,7 @@ namespace TicTacChess_88130
             // 
             this.btnExitApplication.BackColor = System.Drawing.Color.Maroon;
             this.btnExitApplication.ForeColor = System.Drawing.Color.White;
-            this.btnExitApplication.Location = new System.Drawing.Point(559, 624);
+            this.btnExitApplication.Location = new System.Drawing.Point(570, 695);
             this.btnExitApplication.Name = "btnExitApplication";
             this.btnExitApplication.Size = new System.Drawing.Size(140, 47);
             this.btnExitApplication.TabIndex = 7;
@@ -304,7 +305,7 @@ namespace TicTacChess_88130
             // 
             this.btnRestartGame.BackColor = System.Drawing.Color.Navy;
             this.btnRestartGame.ForeColor = System.Drawing.Color.White;
-            this.btnRestartGame.Location = new System.Drawing.Point(15, 624);
+            this.btnRestartGame.Location = new System.Drawing.Point(10, 695);
             this.btnRestartGame.Name = "btnRestartGame";
             this.btnRestartGame.Size = new System.Drawing.Size(140, 47);
             this.btnRestartGame.TabIndex = 9;
@@ -317,19 +318,32 @@ namespace TicTacChess_88130
             this.lblGameStatus.AutoSize = true;
             this.lblGameStatus.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblGameStatus.ForeColor = System.Drawing.Color.White;
-            this.lblGameStatus.Location = new System.Drawing.Point(338, 35);
+            this.lblGameStatus.Location = new System.Drawing.Point(339, 74);
             this.lblGameStatus.Name = "lblGameStatus";
             this.lblGameStatus.Size = new System.Drawing.Size(219, 34);
             this.lblGameStatus.TabIndex = 10;
             this.lblGameStatus.Text = "Set up board";
             // 
-            // Form1
+            // cbxMakeConnection
+            // 
+            this.cbxMakeConnection.AutoSize = true;
+            this.cbxMakeConnection.ForeColor = System.Drawing.Color.White;
+            this.cbxMakeConnection.Location = new System.Drawing.Point(14, 40);
+            this.cbxMakeConnection.Name = "cbxMakeConnection";
+            this.cbxMakeConnection.Size = new System.Drawing.Size(222, 29);
+            this.cbxMakeConnection.TabIndex = 11;
+            this.cbxMakeConnection.Text = "Make connection";
+            this.cbxMakeConnection.UseVisualStyleBackColor = true;
+            this.cbxMakeConnection.CheckedChanged += new System.EventHandler(this.cbxMakeConnection_CheckedChanged);
+            // 
+            // Board
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(722, 685);
+            this.ClientSize = new System.Drawing.Size(722, 754);
             this.ControlBox = false;
+            this.Controls.Add(this.cbxMakeConnection);
             this.Controls.Add(this.lblGameStatus);
             this.Controls.Add(this.btnRestartGame);
             this.Controls.Add(this.btnExitApplication);
@@ -341,7 +355,7 @@ namespace TicTacChess_88130
             this.Controls.Add(this.pbxQueen);
             this.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(5);
-            this.Name = "Form1";
+            this.Name = "Board";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TicTacChess";
             ((System.ComponentModel.ISupportInitialize)(this.pbxRook)).EndInit();
@@ -384,6 +398,7 @@ namespace TicTacChess_88130
         private System.Windows.Forms.Button btnExitApplication;
         private System.Windows.Forms.Button btnRestartGame;
         private System.Windows.Forms.Label lblGameStatus;
+        private System.Windows.Forms.CheckBox cbxMakeConnection;
     }
 }
 
