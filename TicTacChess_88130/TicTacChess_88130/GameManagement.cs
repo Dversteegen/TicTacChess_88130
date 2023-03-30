@@ -6,19 +6,19 @@ namespace TicTacChess_88130
 {
     class GameManagement
     {
-        private List<Square> allSquares;
-        private List<Piece> allPieces;
-        private List<WinPosition> allWinPositions;
+        private List<Square> allSquares = null;
+        private List<Piece> allPieces = null;
+        private List<WinPosition> allWinPositions = null;
 
-        private string currentColor;
-        private string gameState;
-        private bool allPiecesSet;
+        private string currentColor = "white";
+        private string gameState = "setUp";
+
+        private bool waitingForArm = false;
+        private bool allPiecesSet = false;
+        private bool armIsDone = true;
 
         public GameManagement()
         {
-            currentColor = "white";
-            gameState = "setUp";
-
             allSquares = new List<Square>();
             allPieces = new List<Piece>();
             allWinPositions = new List<WinPosition>();
@@ -118,6 +118,9 @@ namespace TicTacChess_88130
             CheckBoardForStart();
         }
 
+        /// <summary>
+        /// Check if all six pieces have been place
+        /// </summary>
         public void CheckBoardForStart()
         {
             List<Piece> allSetPieces = allSquares
@@ -136,6 +139,10 @@ namespace TicTacChess_88130
             }
         }
 
+        /// <summary>
+        /// Returns if the game can start
+        /// </summary>
+        /// <returns></returns>
         public bool CanGameStart()
         {
             return allPiecesSet;
@@ -355,15 +362,6 @@ namespace TicTacChess_88130
 
         #endregion
 
-        #region Arm
-
-        public Tuple<int, int> GetPositionsForArm(int index)
-        {
-            return allSquares[index].GetArmPositions();            
-        }
-
-        #endregion
-
         /// <summary>
         /// Returns there's a piece at the square belonging to the index
         /// </summary>
@@ -402,6 +400,11 @@ namespace TicTacChess_88130
             CheckBoard();
         }
 
+        /// <summary>
+        /// Check is the clicked piece is of the correct color
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public bool CheckColor(int index)
         {
             Piece currentPiece = allSquares[index].GetCurrentPiece();
@@ -420,7 +423,7 @@ namespace TicTacChess_88130
                     }
                 }
             }
-            return false;            
+            return false;
         }
 
         public string GetCurrentColor()
@@ -428,11 +431,13 @@ namespace TicTacChess_88130
             return currentColor;
         }
 
+        /// <summary>
+        /// Checks if the game is finished
+        /// </summary>
         public void CheckBoard()
         {
             int[] allCurrentPieces = allSquares.Where(square => square.GetCurrentPiece() != null && square.GetCurrentPiece().GetPieceColor() == currentColor).Select(square => square.GetSquarePosition()).ToArray();
             int count = 0;
-            //WinPosition currentPosition = new WinPosition(allCurrentPieces[0], allCurrentPieces[1], allCurrentPieces[2]);
 
             foreach (WinPosition winPosition in allWinPositions)
             {
@@ -440,7 +445,6 @@ namespace TicTacChess_88130
                     && winPosition.GetSecondPosition() == allCurrentPieces[1]
                     && winPosition.GetThirdPosition() == allCurrentPieces[2])
                 {
-                    //int index = allWinPositions.IndexOf(currentPosition);
                     if ((count != 0 && currentColor != "white") || count != 2 && currentColor != "black")
                     {
                         gameState = "finished";
@@ -450,6 +454,20 @@ namespace TicTacChess_88130
                 count++;
             }
         }
+
+        #region Arm
+
+        /// <summary>
+        /// Get coordinates for the arm
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public Tuple<int, int> GetPositionsForArm(int index)
+        {
+            return allSquares[index].GetArmPositions();
+        }
+
+        #endregion
 
         #endregion
 
@@ -475,22 +493,21 @@ namespace TicTacChess_88130
             return gameState;
         }
 
-        #endregion
+        #endregion                
 
-        #region ToBeChecked
+        public void UpdateArmStatus()
+        {
+            armIsDone = true;
+        }
 
-        /// <summary>
-        /// Returns all the pieces belonging to the color
-        /// </summary>
-        /// <param name="color"></param>
-        /// <returns></returns>
-        //public List<Piece> GetPiecesOfColor(string color)
-        //{
-        //    return allPieces.Where(piece => piece.GetPieceColor() == color).ToList();
-        //}
+        public bool IsWaitingForArm()
+        {
+            return waitingForArm;
+        }
 
-
-
-        #endregion
+        public void UpdateWaitingForArm(bool status)
+        {
+            waitingForArm = status;
+        }
     }
 }

@@ -29,6 +29,7 @@ namespace TicTacChess_88130
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pbxRook = new System.Windows.Forms.PictureBox();
             this.pbxKnight = new System.Windows.Forms.PictureBox();
             this.pbxQueen = new System.Windows.Forms.PictureBox();
@@ -49,6 +50,7 @@ namespace TicTacChess_88130
             this.btnRestartGame = new System.Windows.Forms.Button();
             this.lblGameStatus = new System.Windows.Forms.Label();
             this.cbxMakeConnection = new System.Windows.Forms.CheckBox();
+            this.timerArm = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pbxRook)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxKnight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxQueen)).BeginInit();
@@ -336,6 +338,12 @@ namespace TicTacChess_88130
             this.cbxMakeConnection.UseVisualStyleBackColor = true;
             this.cbxMakeConnection.CheckedChanged += new System.EventHandler(this.cbxMakeConnection_CheckedChanged);
             // 
+            // timerArm
+            // 
+            this.timerArm.Enabled = true;
+            this.timerArm.Interval = 1000;
+            this.timerArm.Tick += new System.EventHandler(this.timerArm_Tick);
+            // 
             // Board
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 25F);
@@ -399,6 +407,7 @@ namespace TicTacChess_88130
         private System.Windows.Forms.Button btnRestartGame;
         private System.Windows.Forms.Label lblGameStatus;
         private System.Windows.Forms.CheckBox cbxMakeConnection;
+        private System.Windows.Forms.Timer timerArm;
     }
 }
 

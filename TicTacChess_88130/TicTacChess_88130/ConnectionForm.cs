@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.IO.Ports;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace TicTacChess_88130
 {
@@ -16,12 +10,12 @@ namespace TicTacChess_88130
     {
         private delegate void SafeCallDelegate();
         String receivedString = "";
-        String receivedStringLast = "";
-
-        //string sendCommando = "";
+        String receivedStringLast = "";        
 
         List<Command> allCommands = new List<Command>();
         List<string> allCurrentCommands = new List<string>();
+        bool armIsDone = true;
+
 
         public ConnectionForm()
         {
@@ -132,7 +126,7 @@ namespace TicTacChess_88130
         }
 
         /// <summary>
-        /// Printing message to the Richtextbox in a choosable color
+        /// Printing message to the listbox
         /// </summary>
         /// <param name="a_text"></param>
         /// <param name="a_color"></param>
@@ -143,7 +137,7 @@ namespace TicTacChess_88130
 
             //For auto scrolling the listbox
             int nItems = (int)(lbxLogs.Height / lbxLogs.ItemHeight);
-            lbxLogs.TopIndex = lbxLogs.Items.Count - nItems;            
+            lbxLogs.TopIndex = lbxLogs.Items.Count - nItems;
         }
 
         public void WriteArduino(string a_action)
@@ -195,12 +189,6 @@ namespace TicTacChess_88130
             {
                 try
                 {
-                    //if (lbxLogs.InvokeRequired)
-                    //{
-                    //    receivedString = serialPortArduino.ReadLine();
-                    //    PrintLn(receivedString, "G");
-                    //    //lbxLogs.Items.Add();
-                    //}
                     //Check if this is the same thread
                     if (lbxLogs.InvokeRequired)
                     {
@@ -246,22 +234,41 @@ namespace TicTacChess_88130
             WriteArduino("ZS:0");
         }
 
-        public void MovePiece(Tuple<int, int> firstArmPositions, Tuple<int, int> secondArmPositions)
+        /// <summary>
+        /// Tells another function what commands to add to the list
+        /// </summary>
+        /// <param name="firstArmPositions"></param>
+        /// <param name="secondArmPositions"></param>
+        public void AddCommands(Tuple<int, int> firstArmPositions, Tuple<int, int> secondArmPositions)
         {
-            string horizontalCommand = $"HS:{firstArmPositions.Item1}";
-            allCurrentCommands.Add(horizontalCommand);
-            string rotationCommand = $"RS:{firstArmPositions.Item2}";
-            allCurrentCommands.Add(rotationCommand);
-            allCurrentCommands.Add("VS:1150");
-            allCurrentCommands.Add("CS:1");
-            allCurrentCommands.Add("SS:1");                        
-
-            allCurrentCommands.Add($"HS:{secondArmPositions.Item1}");
-            allCurrentCommands.Add($"RS:{secondArmPositions.Item2}");            
-            allCurrentCommands.Add("VS:0900");            
-            allCurrentCommands.Add("SS:0");            
+            AddMoveCommands(1, 1150, firstArmPositions, false);
+            AddMoveCommands(0, 900, secondArmPositions, true);
         }
 
+        /// <summary>
+        /// Addd commands to the list
+        /// </summary>
+        /// <param name="suckStatus"></param>
+        /// <param name="verticalheight"></param>
+        /// <param name="armPositions"></param>
+        /// <param name="piecePlaced"></param>
+        private void AddMoveCommands(int suckStatus, int verticalheight, Tuple<int, int> armPositions, bool piecePlaced)
+        {
+            allCurrentCommands.Add($"RS:{armPositions.Item2}");
+            allCurrentCommands.Add($"HS:{armPositions.Item1}");
+            allCurrentCommands.Add($"VS:{verticalheight}");
+            allCurrentCommands.Add($"CS:{suckStatus}");
+            allCurrentCommands.Add($"SS:{suckStatus}");
+            allCurrentCommands.Add($"VS:0900");
+            if (piecePlaced)
+            {
+                ZeroArm();
+            }
+        }        
+
+        /// <summary>
+        /// Resets the arm after moving a piece
+        /// </summary>
         public void ZeroArm()
         {
             allCurrentCommands.Add("ZS:1");
@@ -269,16 +276,44 @@ namespace TicTacChess_88130
             allCurrentCommands.Add("ZS:3");
         }
 
+        /// <summary>
+        /// Ever tick it checks if there are any commands in the list, if yes it executes them
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void arduinoTimer_Tick(object sender, EventArgs e)
         {
             int amountOfcommands = allCurrentCommands.Count;
 
-            if (amountOfcommands> 0 && lbxLogs.Items[lbxLogs.Items.Count -1].ToString().Contains("Ready"))
+            if (amountOfcommands > 0 )                
             {
-                WriteArduino(allCurrentCommands[0]);
-                allCurrentCommands.RemoveAt(0);
+                armIsDone = false;
+                if (lbxLogs.Items[lbxLogs.Items.Count - 1].ToString().Contains("Ready"))
+                {
+                    WriteArduino(allCurrentCommands[0]);
+                    allCurrentCommands.RemoveAt(0);
+                }
+            } 
+            else
+            {
+                armIsDone = true;
             }
+        }
 
+        private void btnUseCoords_Click(object sender, EventArgs e)
+        {
+            string horizontal = tbxHorizontal.Text;
+            string rotation = tbxRot.Text;
+
+            allCurrentCommands.Add($"RS:{rotation}");
+            allCurrentCommands.Add($"HS:{horizontal}");            
+            allCurrentCommands.Add($"VS:1150");
+            ZeroArm();
+        }
+
+        public bool GetArmStatus()
+        {
+            return armIsDone;
         }
     }
 }
