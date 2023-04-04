@@ -13,7 +13,7 @@ namespace TicTacChess_88130
         PictureBox currentPictureBox = null;
         PictureBox newPictureBox = null;
         ConnectionForm connectionForm = new ConnectionForm();
-        
+
         int[] horizontalPositions = new int[] { 320, 400, 570, 850, 900, 1040, 1330, 1400, 1520 };
         int[] rotationPositions = new int[] { 20, 135, 245, 0, 110, 200, 0, 95, 175 };
 
@@ -22,7 +22,7 @@ namespace TicTacChess_88130
             InitializeComponent();
 
             SetUpData();
-            PictureBoxesAllowDrop();            
+            PictureBoxesAllowDrop();
         }
 
         #region StartUp        
@@ -53,7 +53,7 @@ namespace TicTacChess_88130
         /// </summary>
         private void SetUpPieces()
         {
-            string[] pieceTypes = new string[] { "Queen", "Rook", "Knight" };            
+            string[] pieceTypes = new string[] { "Queen", "Rook", "Knight" };
             string currentColor = "white";
 
             for (int count = 0; count < 6; count++)
@@ -66,7 +66,7 @@ namespace TicTacChess_88130
                 else
                 {
                     pieceType = pieceTypes[count - 3];
-                    currentColor = "black";                    
+                    currentColor = "black";
                 }
 
                 Piece newPiece = new Piece(pieceType, currentColor);
@@ -270,7 +270,7 @@ namespace TicTacChess_88130
                 else
                 {
                     currentPictureBox.Image = null;
-                    RegisterMove(newPictureBox.Name);                    
+                    RegisterMove(newPictureBox.Name);
                 }
 
                 Image newPicture = (Bitmap)e.Data.GetData(DataFormats.Bitmap);
@@ -356,7 +356,7 @@ namespace TicTacChess_88130
                 OperateArm(indexOfOldPictureBox, indexOfNewPictureBox);
             }
         }
-        
+
         /// <summary>
         /// Resets the color of the pictureboxes in the board to default color
         /// </summary>
@@ -422,12 +422,15 @@ namespace TicTacChess_88130
         /// <param name="status"></param>
         private void UpdateStatusLabel(string status)
         {
-            string statusEnd = " to play";
+            string statusBegin = "";
+            string statusEnd = "to play";
+            string color = myGameManagement.GetCurrentColor();
 
             switch (status)
             {
                 case "ready":
                     myGameManagement.ChangeColor("white");
+                    statusBegin = char.ToUpper(color[0]) + color.Substring(1);
                     break;
 
                 case "moved":
@@ -439,15 +442,30 @@ namespace TicTacChess_88130
                     {
                         myGameManagement.ChangeColor("white");
                     }
+                    statusBegin = char.ToUpper(color[0]) + color.Substring(1);
+                    break;
+
+                case "waiting":
+                    if (lblGameStatus.Text.Contains("..."))
+                    {
+                        statusEnd = "Waiting for arm.";
+                    }
+                    if (lblGameStatus.Text.Contains(".."))
+                    {
+                        statusEnd = "Waiting for arm...";
+                    }
+                    if (lblGameStatus.Text.Contains("..."))
+                    {
+                        statusEnd = "Waiting for arm.";
+                    }
                     break;
 
                 case "finished":
                     statusEnd = " has won the game!";
                     break;
             }
-
-            string color = myGameManagement.GetCurrentColor();
-            lblGameStatus.Text = char.ToUpper(color[0]) + color.Substring(1) + statusEnd;
+                        
+            lblGameStatus.Text = $"{statusBegin} {statusEnd}";
         }
 
         #endregion
@@ -516,6 +534,10 @@ namespace TicTacChess_88130
                 myGameManagement.UpdateArmStatus();
                 myGameManagement.UpdateWaitingForArm(false);
                 ToggleBoard("enable");
+            }
+            else if (myGameManagement.IsWaitingForArm() == true)
+            {
+                UpdateStatusLabel("moved");
             }
         }
 

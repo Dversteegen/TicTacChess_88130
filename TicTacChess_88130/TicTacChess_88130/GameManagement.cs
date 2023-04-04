@@ -14,8 +14,7 @@ namespace TicTacChess_88130
         private string gameState = "setUp";
 
         private bool waitingForArm = false;
-        private bool allPiecesSet = false;
-        private bool armIsDone = true;
+        private bool allPiecesSet = false;        
 
         public GameManagement()
         {

@@ -113,9 +113,7 @@ namespace TicTacChess_88130
                     Thread.Sleep(200); //wait 100 ms to open port
 
                     this.Text = "Main - using com port: " + cbxPorts.Text;
-                    PrintLn("Using com port: " + cbxPorts.Text, "W");
-                    btnSendMessage.Enabled = true;
-                    cbxMessages.Enabled = true;
+                    PrintLn("Using com port: " + cbxPorts.Text, "W");                    
                     btnClearCommand.Enabled = true;
                 }
                 catch
@@ -218,16 +216,7 @@ namespace TicTacChess_88130
             receivedStringLast = receivedString;
 
             return receivedString;
-        }
-
-        private void btnSendMessage_Click(object sender, EventArgs e)
-        {
-            if (cbxMessages.SelectedIndex >= 0)
-            {
-                string command = allCommands[cbxMessages.SelectedIndex].GetCommandString();
-                WriteArduino(command);
-            }
-        }
+        }        
 
         private void btnClearCommand_Click(object sender, EventArgs e)
         {
@@ -298,18 +287,7 @@ namespace TicTacChess_88130
             {
                 armIsDone = true;
             }
-        }
-
-        private void btnUseCoords_Click(object sender, EventArgs e)
-        {
-            string horizontal = tbxHorizontal.Text;
-            string rotation = tbxRot.Text;
-
-            allCurrentCommands.Add($"RS:{rotation}");
-            allCurrentCommands.Add($"HS:{horizontal}");            
-            allCurrentCommands.Add($"VS:1150");
-            ZeroArm();
-        }
+        }        
 
         public bool GetArmStatus()
         {

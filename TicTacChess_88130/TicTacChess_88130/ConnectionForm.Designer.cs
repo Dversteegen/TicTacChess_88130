@@ -38,19 +38,10 @@ namespace TicTacChess_88130
             this.btnScanPorts = new System.Windows.Forms.Button();
             this.gbxCommunication = new System.Windows.Forms.GroupBox();
             this.btnClearCommand = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbxMessages = new System.Windows.Forms.ComboBox();
-            this.btnSendMessage = new System.Windows.Forms.Button();
             this.serialPortArduino = new System.IO.Ports.SerialPort(this.components);
             this.arduinoTimer = new System.Windows.Forms.Timer(this.components);
-            this.btnQuickZero = new System.Windows.Forms.Button();
-            this.gbxTest = new System.Windows.Forms.GroupBox();
-            this.tbxHorizontal = new System.Windows.Forms.TextBox();
-            this.tbxRot = new System.Windows.Forms.TextBox();
-            this.btnUseCoords = new System.Windows.Forms.Button();
             this.gbxConnection.SuspendLayout();
             this.gbxCommunication.SuspendLayout();
-            this.gbxTest.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbxLogs
@@ -120,15 +111,11 @@ namespace TicTacChess_88130
             // 
             // gbxCommunication
             // 
-            this.gbxCommunication.Controls.Add(this.btnQuickZero);
             this.gbxCommunication.Controls.Add(this.btnClearCommand);
-            this.gbxCommunication.Controls.Add(this.label2);
-            this.gbxCommunication.Controls.Add(this.cbxMessages);
-            this.gbxCommunication.Controls.Add(this.btnSendMessage);
             this.gbxCommunication.ForeColor = System.Drawing.Color.White;
             this.gbxCommunication.Location = new System.Drawing.Point(12, 236);
             this.gbxCommunication.Name = "gbxCommunication";
-            this.gbxCommunication.Size = new System.Drawing.Size(279, 281);
+            this.gbxCommunication.Size = new System.Drawing.Size(279, 84);
             this.gbxCommunication.TabIndex = 2;
             this.gbxCommunication.TabStop = false;
             this.gbxCommunication.Text = "Communication";
@@ -136,55 +123,13 @@ namespace TicTacChess_88130
             // btnClearCommand
             // 
             this.btnClearCommand.BackColor = System.Drawing.Color.Navy;
-            this.btnClearCommand.Location = new System.Drawing.Point(11, 168);
+            this.btnClearCommand.Location = new System.Drawing.Point(6, 31);
             this.btnClearCommand.Name = "btnClearCommand";
             this.btnClearCommand.Size = new System.Drawing.Size(256, 47);
             this.btnClearCommand.TabIndex = 6;
             this.btnClearCommand.Text = "Clear all";
             this.btnClearCommand.UseVisualStyleBackColor = false;
             this.btnClearCommand.Click += new System.EventHandler(this.btnClearCommand_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 28);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(128, 25);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Messages:";
-            // 
-            // cbxMessages
-            // 
-            this.cbxMessages.BackColor = System.Drawing.Color.Navy;
-            this.cbxMessages.ForeColor = System.Drawing.Color.White;
-            this.cbxMessages.FormattingEnabled = true;
-            this.cbxMessages.Items.AddRange(new object[] {
-            "Vertical",
-            "Horizontal",
-            "Rotation",
-            "Compressor off",
-            "Compressor on",
-            "Suction off",
-            "Suction on",
-            "Zero all",
-            "Zero vertical",
-            "Zero horizontal",
-            "Zero rotation"});
-            this.cbxMessages.Location = new System.Drawing.Point(11, 67);
-            this.cbxMessages.Name = "cbxMessages";
-            this.cbxMessages.Size = new System.Drawing.Size(256, 33);
-            this.cbxMessages.TabIndex = 4;
-            // 
-            // btnSendMessage
-            // 
-            this.btnSendMessage.BackColor = System.Drawing.Color.Navy;
-            this.btnSendMessage.Location = new System.Drawing.Point(11, 115);
-            this.btnSendMessage.Name = "btnSendMessage";
-            this.btnSendMessage.Size = new System.Drawing.Size(256, 47);
-            this.btnSendMessage.TabIndex = 1;
-            this.btnSendMessage.Text = "Send message";
-            this.btnSendMessage.UseVisualStyleBackColor = false;
-            this.btnSendMessage.Click += new System.EventHandler(this.btnSendMessage_Click);
             // 
             // serialPortArduino
             // 
@@ -200,66 +145,13 @@ namespace TicTacChess_88130
             this.arduinoTimer.Interval = 1000;
             this.arduinoTimer.Tick += new System.EventHandler(this.arduinoTimer_Tick);
             // 
-            // btnQuickZero
-            // 
-            this.btnQuickZero.BackColor = System.Drawing.Color.Navy;
-            this.btnQuickZero.Location = new System.Drawing.Point(11, 221);
-            this.btnQuickZero.Name = "btnQuickZero";
-            this.btnQuickZero.Size = new System.Drawing.Size(256, 47);
-            this.btnQuickZero.TabIndex = 7;
-            this.btnQuickZero.Text = "Quick zero";
-            this.btnQuickZero.UseVisualStyleBackColor = false;
-            // 
-            // gbxTest
-            // 
-            this.gbxTest.Controls.Add(this.btnUseCoords);
-            this.gbxTest.Controls.Add(this.tbxRot);
-            this.gbxTest.Controls.Add(this.tbxHorizontal);
-            this.gbxTest.ForeColor = System.Drawing.Color.White;
-            this.gbxTest.Location = new System.Drawing.Point(12, 523);
-            this.gbxTest.Name = "gbxTest";
-            this.gbxTest.Size = new System.Drawing.Size(947, 93);
-            this.gbxTest.TabIndex = 3;
-            this.gbxTest.TabStop = false;
-            this.gbxTest.Text = "Test";
-            // 
-            // tbxHorizontal
-            // 
-            this.tbxHorizontal.BackColor = System.Drawing.Color.Navy;
-            this.tbxHorizontal.ForeColor = System.Drawing.Color.White;
-            this.tbxHorizontal.Location = new System.Drawing.Point(11, 41);
-            this.tbxHorizontal.Name = "tbxHorizontal";
-            this.tbxHorizontal.Size = new System.Drawing.Size(147, 32);
-            this.tbxHorizontal.TabIndex = 0;
-            // 
-            // tbxRot
-            // 
-            this.tbxRot.BackColor = System.Drawing.Color.Navy;
-            this.tbxRot.ForeColor = System.Drawing.Color.White;
-            this.tbxRot.Location = new System.Drawing.Point(298, 41);
-            this.tbxRot.Name = "tbxRot";
-            this.tbxRot.Size = new System.Drawing.Size(147, 32);
-            this.tbxRot.TabIndex = 1;
-            // 
-            // btnUseCoords
-            // 
-            this.btnUseCoords.BackColor = System.Drawing.Color.Navy;
-            this.btnUseCoords.Location = new System.Drawing.Point(513, 33);
-            this.btnUseCoords.Name = "btnUseCoords";
-            this.btnUseCoords.Size = new System.Drawing.Size(256, 47);
-            this.btnUseCoords.TabIndex = 8;
-            this.btnUseCoords.Text = "Press!";
-            this.btnUseCoords.UseVisualStyleBackColor = false;
-            this.btnUseCoords.Click += new System.EventHandler(this.btnUseCoords_Click);
-            // 
             // ConnectionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(971, 628);
+            this.ClientSize = new System.Drawing.Size(971, 528);
             this.ControlBox = false;
-            this.Controls.Add(this.gbxTest);
             this.Controls.Add(this.gbxCommunication);
             this.Controls.Add(this.gbxConnection);
             this.Controls.Add(this.lbxLogs);
@@ -272,9 +164,6 @@ namespace TicTacChess_88130
             this.gbxConnection.ResumeLayout(false);
             this.gbxConnection.PerformLayout();
             this.gbxCommunication.ResumeLayout(false);
-            this.gbxCommunication.PerformLayout();
-            this.gbxTest.ResumeLayout(false);
-            this.gbxTest.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -288,16 +177,8 @@ namespace TicTacChess_88130
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cbxPorts;
         private System.Windows.Forms.GroupBox gbxCommunication;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cbxMessages;
-        private System.Windows.Forms.Button btnSendMessage;
         private System.Windows.Forms.Button btnClearCommand;
         private System.IO.Ports.SerialPort serialPortArduino;
         private System.Windows.Forms.Timer arduinoTimer;
-        private System.Windows.Forms.Button btnQuickZero;
-        private System.Windows.Forms.GroupBox gbxTest;
-        private System.Windows.Forms.Button btnUseCoords;
-        private System.Windows.Forms.TextBox tbxRot;
-        private System.Windows.Forms.TextBox tbxHorizontal;
     }
 }
