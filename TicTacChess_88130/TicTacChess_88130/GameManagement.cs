@@ -12,9 +12,10 @@ namespace TicTacChess_88130
 
         private string currentColor = "white";
         private string gameState = "setUp";
-
+        
+        private bool allPiecesSet = false;
         private bool waitingForArm = false;
-        private bool allPiecesSet = false;        
+        private bool connectedToArm = false;
 
         public GameManagement()
         {
@@ -425,9 +426,31 @@ namespace TicTacChess_88130
             return false;
         }
 
+        public void ToggleColor()
+        {
+            if (currentColor == "white")
+            {
+                currentColor = "black";
+            }
+            else
+            {
+                currentColor = "white";
+            }
+        }
+
         public string GetCurrentColor()
         {
             return currentColor;
+        }
+
+        public void SetConnectedToArm(bool newConnectionStatus)
+        {
+            connectedToArm = true;
+        }
+
+        public bool IsConnectedToArm()
+        {
+            return connectedToArm;
         }
 
         /// <summary>
@@ -494,10 +517,10 @@ namespace TicTacChess_88130
 
         #endregion                
 
-        public void UpdateArmStatus()
-        {
-            armIsDone = true;
-        }
+        //public void UpdateArmStatus()
+        //{
+        //    armIsDone = true;
+        //}
 
         public bool IsWaitingForArm()
         {

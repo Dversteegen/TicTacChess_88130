@@ -317,7 +317,6 @@ namespace TicTacChess_88130
             // 
             // lblGameStatus
             // 
-            this.lblGameStatus.AutoSize = true;
             this.lblGameStatus.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblGameStatus.ForeColor = System.Drawing.Color.White;
             this.lblGameStatus.Location = new System.Drawing.Point(339, 74);
@@ -325,6 +324,7 @@ namespace TicTacChess_88130
             this.lblGameStatus.Size = new System.Drawing.Size(219, 34);
             this.lblGameStatus.TabIndex = 10;
             this.lblGameStatus.Text = "Set up board";
+            this.lblGameStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // cbxMakeConnection
             // 
@@ -340,8 +340,7 @@ namespace TicTacChess_88130
             // 
             // timerArm
             // 
-            this.timerArm.Enabled = true;
-            this.timerArm.Interval = 1000;
+            this.timerArm.Interval = 500;
             this.timerArm.Tick += new System.EventHandler(this.timerArm_Tick);
             // 
             // Board

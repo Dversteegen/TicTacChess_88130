@@ -142,7 +142,7 @@ namespace TicTacChess_88130
             // arduinoTimer
             // 
             this.arduinoTimer.Enabled = true;
-            this.arduinoTimer.Interval = 1000;
+            this.arduinoTimer.Interval = 500;
             this.arduinoTimer.Tick += new System.EventHandler(this.arduinoTimer_Tick);
             // 
             // ConnectionForm
