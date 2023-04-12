@@ -50,7 +50,7 @@ namespace TicTacChess_88130
             this.btnRestartGame = new System.Windows.Forms.Button();
             this.lblGameStatus = new System.Windows.Forms.Label();
             this.cbxMakeConnection = new System.Windows.Forms.CheckBox();
-            this.timerArm = new System.Windows.Forms.Timer(this.components);
+            this.tmrArm = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pbxRook)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxKnight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxQueen)).BeginInit();
@@ -338,10 +338,10 @@ namespace TicTacChess_88130
             this.cbxMakeConnection.UseVisualStyleBackColor = true;
             this.cbxMakeConnection.CheckedChanged += new System.EventHandler(this.cbxMakeConnection_CheckedChanged);
             // 
-            // timerArm
+            // tmrArm
             // 
-            this.timerArm.Interval = 500;
-            this.timerArm.Tick += new System.EventHandler(this.timerArm_Tick);
+            this.tmrArm.Interval = 500;
+            this.tmrArm.Tick += new System.EventHandler(this.tmrArm_Tick);
             // 
             // Board
             // 
@@ -406,7 +406,7 @@ namespace TicTacChess_88130
         private System.Windows.Forms.Button btnRestartGame;
         private System.Windows.Forms.Label lblGameStatus;
         private System.Windows.Forms.CheckBox cbxMakeConnection;
-        private System.Windows.Forms.Timer timerArm;
+        private System.Windows.Forms.Timer tmrArm;
     }
 }
 

@@ -10,12 +10,12 @@ namespace TicTacChess_88130
     {
         private delegate void SafeCallDelegate();
         String receivedString = "";
-        String receivedStringLast = "";        
+        String receivedStringLast = "";
 
         List<Command> allCommands = new List<Command>();
         List<string> allCurrentCommands = new List<string>();
         bool armIsDone = true;
-
+        bool isZeroing = false;
 
         public ConnectionForm()
         {
@@ -74,7 +74,7 @@ namespace TicTacChess_88130
             //Close the connection if there already is one open
             if (serialPortArduino.IsOpen)
             {
-                PrintLn("Connection was open. Closing..", "B");
+                PrintLn("Connection was open. Closing..");
                 serialPortArduino.Close();
             }
             cbxPorts.Items.Clear();
@@ -85,15 +85,15 @@ namespace TicTacChess_88130
                 m_portWithOutLastCharacter = port;
 
                 cbxPorts.Items.Add(m_portWithOutLastCharacter);
-                PrintLn("Found port:" + m_portWithOutLastCharacter.ToString(), "W");
+                PrintLn("Found port:" + m_portWithOutLastCharacter.ToString());
             }
         }
 
         private void cbxPorts_SelectedIndexChanged(object sender, EventArgs e)
         {
             serialPortArduino.PortName = cbxPorts.Text;
-            PrintLn("Port selected: " + serialPortArduino.PortName, "W");
-            PrintLn("Default baudrate: " + serialPortArduino.BaudRate.ToString(), "W");
+            PrintLn("Port selected: " + serialPortArduino.PortName);
+            PrintLn("Default baudrate: " + serialPortArduino.BaudRate.ToString());
             btnOpenPort.Enabled = true;
         }
 
@@ -101,7 +101,7 @@ namespace TicTacChess_88130
         {
             //This is to settup the default baudrate
             serialPortArduino.BaudRate = Convert.ToInt32(115200);
-            PrintLn("Selected baudrate: " + serialPortArduino.BaudRate.ToString(), "W");
+            PrintLn("Selected baudrate: " + serialPortArduino.BaudRate.ToString());
 
             //If there is no open connection the connection will be opened
             if (!serialPortArduino.IsOpen)
@@ -113,12 +113,12 @@ namespace TicTacChess_88130
                     Thread.Sleep(200); //wait 100 ms to open port
 
                     this.Text = "Main - using com port: " + cbxPorts.Text;
-                    PrintLn("Using com port: " + cbxPorts.Text, "W");                    
+                    PrintLn("Using com port: " + cbxPorts.Text);
                     btnClearCommand.Enabled = true;
                 }
                 catch
                 {
-                    PrintLn("ERROR: Please make sure that the correct port was selected, and the device, plugged in.", "R");
+                    PrintLn("ERROR: Please make sure that the correct port was selected, and the device, plugged in.");
                 }
             }
         }
@@ -126,12 +126,10 @@ namespace TicTacChess_88130
         /// <summary>
         /// Printing message to the listbox
         /// </summary>
-        /// <param name="a_text"></param>
-        /// <param name="a_color"></param>
-        public void PrintLn(string a_text, string a_color)
+        /// <param name="a_text"></param>        
+        public void PrintLn(string a_text)
         {
             lbxLogs.Items.Add(a_text);
-            //lbxLogs.Items.Add("");
 
             //For auto scrolling the listbox
             int nItems = (int)(lbxLogs.Height / lbxLogs.ItemHeight);
@@ -168,11 +166,11 @@ namespace TicTacChess_88130
             {
                 serialPortArduino.Write(m_data, 0, m_length);
 
-                PrintLn("Transmitted message from Main: " + a_action, "Y");
+                PrintLn("Transmitted message from Main: " + a_action);
             }
             else
             {
-                PrintLn("ERROR. Please make sure that the correct port was selected, and the device, plugged in.", "R");
+                PrintLn("ERROR. Please make sure that the correct port was selected, and the device, plugged in.");
             }
         }
 
@@ -191,18 +189,19 @@ namespace TicTacChess_88130
                     if (lbxLogs.InvokeRequired)
                     {
                         var d = new SafeCallDelegate(HandleReceivedData);
+
                         //Allow changes in this thread from another thread
                         lbxLogs.Invoke(d, new object[] { });
                     }
                     else
                     {
                         receivedString = serialPortArduino.ReadLine();
-                        PrintLn(receivedString, "G");
+                        PrintLn(receivedString);
                     }
                 }
                 catch
                 {
-                    PrintLn("ERROR: Time out of: " + serialPortArduino.ReadTimeout.ToString() + "ms. Data read failed", "R");
+                    PrintLn("ERROR: Time out of: " + serialPortArduino.ReadTimeout.ToString() + "ms. Data read failed");
                 }
             }
         }
@@ -211,16 +210,18 @@ namespace TicTacChess_88130
         {
             if (receivedString != receivedStringLast)
             {
-                PrintLn(receivedString, "G");
+                PrintLn(receivedString);
             }
             receivedStringLast = receivedString;
 
             return receivedString;
-        }        
+        }
 
         private void btnClearCommand_Click(object sender, EventArgs e)
         {
             WriteArduino("ZS:0");
+            isZeroing = true;
+            armIsDone = false;
         }
 
         /// <summary>
@@ -230,6 +231,7 @@ namespace TicTacChess_88130
         /// <param name="secondArmPositions"></param>
         public void AddCommands(Tuple<int, int> firstArmPositions, Tuple<int, int> secondArmPositions)
         {
+            armIsDone = false;
             AddMoveCommands(1, 1150, firstArmPositions, false);
             AddMoveCommands(0, 900, secondArmPositions, true);
         }
@@ -242,7 +244,7 @@ namespace TicTacChess_88130
         /// <param name="armPositions"></param>
         /// <param name="piecePlaced"></param>
         private void AddMoveCommands(int suckStatus, int verticalheight, Tuple<int, int> armPositions, bool piecePlaced)
-        {
+        {            
             allCurrentCommands.Add($"RS:{armPositions.Item2}");
             allCurrentCommands.Add($"HS:{armPositions.Item1}");
             allCurrentCommands.Add($"VS:{verticalheight}");
@@ -253,7 +255,8 @@ namespace TicTacChess_88130
             {
                 ZeroArm();
             }
-        }        
+            arduinoTimer.Enabled = true;
+        }
 
         /// <summary>
         /// Resets the arm after moving a piece
@@ -263,6 +266,7 @@ namespace TicTacChess_88130
             allCurrentCommands.Add("ZS:1");
             allCurrentCommands.Add("ZS:2");
             allCurrentCommands.Add("ZS:3");
+            arduinoTimer.Enabled = true;
         }
 
         /// <summary>
@@ -272,24 +276,35 @@ namespace TicTacChess_88130
         /// <param name="e"></param>
         private void arduinoTimer_Tick(object sender, EventArgs e)
         {
-            int amountOfcommands = allCurrentCommands.Count;
-
-            if (amountOfcommands > 0 )                
+            if (isZeroing)
             {
-                armIsDone = false;
-                if (lbxLogs.Items[lbxLogs.Items.Count - 1].ToString().Contains("Ready"))
+                if (lbxLogs.Items[lbxLogs.Items.Count - 1].ToString().Contains("Ready-LT"))
                 {
-                    WriteArduino(allCurrentCommands[0]);
-                    allCurrentCommands.RemoveAt(0);
+                    isZeroing = false;
+                    armIsDone = true;
+                    arduinoTimer.Enabled = false;
                 }
-            } 
+            }
             else
             {
-                armIsDone = true;
-            }
-        }        
+                int amountOfcommands = allCurrentCommands.Count;
 
-        public bool GetArmStatus()
+                if (amountOfcommands > 0)
+                {                    
+                    if (lbxLogs.Items[lbxLogs.Items.Count - 1].ToString().Contains("Ready"))
+                    {
+                        WriteArduino(allCurrentCommands[0]);
+                        allCurrentCommands.RemoveAt(0);
+                    }
+                }
+                else
+                {
+                    armIsDone = true;                    
+                }
+            }
+        }
+
+        public bool IsArmDone()
         {
             return armIsDone;
         }

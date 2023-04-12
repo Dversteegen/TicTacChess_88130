@@ -240,10 +240,12 @@ namespace TicTacChess_88130
                 currentPictureBox = (PictureBox)sender;
                 int index = GetAllBoardPictureBoxes().FindIndex(pictureBox => pictureBox.Name == currentPictureBox.Name);
 
-                if (myGameManagement.CheckColor(index) == true)
+                if (myGameManagement.CheckColor(index) == true && currentPictureBox.BackColor == Color.Silver)
                 {
                     if (currentPictureBox.Image != null)
                     {
+                        MakeBoardWhite();
+                        DisplayCurrentTurn();
                         ShowOpenPositions();
                         currentPictureBox.DoDragDrop(currentPictureBox.Image, DragDropEffects.Copy);
                     }
@@ -265,20 +267,18 @@ namespace TicTacChess_88130
                 if (myGameManagement.GetGameState() == "setUp")
                 {
                     currentPictureBox.BackColor = Color.Red;
-                    //RegisterMove(newPictureBox.Name);
                 }
                 else
                 {
                     currentPictureBox.Image = null;
-                    //RegisterMove(newPictureBox.Name);
                 }
 
                 Image newPicture = (Bitmap)e.Data.GetData(DataFormats.Bitmap);
                 newPictureBox.Image = newPicture;
                 RegisterMove(newPictureBox.Name);
+                MakeBoardWhite();
+                DisplayCurrentTurn();                
             }
-
-            UpdateBoardColorsAfterTurn();
         }
 
         #endregion
@@ -347,7 +347,16 @@ namespace TicTacChess_88130
                 myGameManagement.UpdateStartSquare(indexOfNewPictureBox, currentPictureBox.Name);
                 if (myGameManagement.CanGameStart() == true)
                 {
-                    UpdateStatusLabel("ready");
+                    if (connectionForm.IsArmDone() == true)
+                    {
+                        UpdateStatusLabel("ready");
+                    }
+                    else
+                    {
+                        myGameManagement.UpdateWaitingForArm(true);
+                        myGameManagement.ChangeGameState("ready");
+                        UpdateStatusLabel("waiting");
+                    }
                 }
             }
             else if (myGameManagement.GetGameState() == "playing")
@@ -361,28 +370,17 @@ namespace TicTacChess_88130
                 else
                 {
                     string status = myGameManagement.GetGameState() == "finished" ? "finished" : "moved";
-                    UpdateStatusLabel(status);
+                    UpdateStatusLabel(status);                    
                 }
             }
         }
 
-        /// <summary>
-        /// Resets the color of the pictureboxes in the board to default color
-        /// </summary>
-        private void UpdateBoardColorsAfterTurn()
+        private void MakeBoardWhite()
         {
-            //TODO: Change this possibly            
-            if (myGameManagement.GetGameState() == "setUp")
+            foreach (PictureBox pictureBox in GetAllBoardPictureBoxes())
             {
-                foreach (PictureBox pictureBox in GetAllBoardPictureBoxes())
-                {
-                    pictureBox.BackColor = Color.White;
-                }
+                pictureBox.BackColor = Color.White;
             }
-            else
-            {
-                DisplayCurrentTurn();
-            }            
         }
 
         /// <summary>
@@ -390,18 +388,21 @@ namespace TicTacChess_88130
         /// </summary>
         private void DisplayCurrentTurn()
         {
-            int count = 0;
-            foreach (PictureBox pictureBox in GetAllBoardPictureBoxes())
+            if ((myGameManagement.GetGameState() == "playing" || myGameManagement.GetGameState() == "ready") && (myGameManagement.IsConnectedToArm() == false || connectionForm.IsArmDone()))
             {
-                if (myGameManagement.CheckColor(count))
+                int count = 0;
+                foreach (PictureBox pictureBox in GetAllBoardPictureBoxes())
                 {
-                    pictureBox.BackColor = Color.Silver;
+                    if (myGameManagement.CheckColor(count))
+                    {
+                        pictureBox.BackColor = Color.Silver;
+                    }
+                    else
+                    {
+                        pictureBox.BackColor = Color.White;
+                    }
+                    count++;
                 }
-                else
-                {
-                    pictureBox.BackColor = Color.White;
-                }
-                count++;
             }
         }
 
@@ -423,6 +424,8 @@ namespace TicTacChess_88130
 
             lblGameStatus.Text = "Set up board";
             rbtWhite.Checked = true;
+            rbtWhite.Enabled = true;
+            rbtBlack.Enabled = true;
         }
 
         /// <summary>
@@ -460,33 +463,48 @@ namespace TicTacChess_88130
         {
             string statusBegin = "";
             string statusEnd = "to play";
-            string color = "";
 
             switch (status)
             {
                 case "ready":
                     myGameManagement.ChangeColor("white");
-                    color = "white";
-                    statusBegin = char.ToUpper(color[0]) + color.Substring(1);
-                    lblGameStatus.Text = $"{statusBegin} {statusEnd}";
+                    lblGameStatus.Text = $"White {statusEnd}";
+                    rbtWhite.Checked = true;
+                    rbtWhite.Enabled = false;
+                    rbtBlack.Enabled = false;
+                    MakeBoardWhite();
+                    DisplayCurrentTurn();                    
+                    myGameManagement.ChangeGameState("playing");
                     break;
 
                 case "moved":
                     myGameManagement.ToggleColor();
-                    color = myGameManagement.GetCurrentColor();
+                    DisplayCurrentTurn();
+                    string color = myGameManagement.GetCurrentColor();
                     statusBegin = char.ToUpper(color[0]) + color.Substring(1);
                     lblGameStatus.Text = $"{statusBegin} {statusEnd}";
                     break;
 
                 case "waiting":
-                    statusEnd = "Waiting";
+                    statusEnd = GetWaitingText();
                     lblGameStatus.Text = $"{statusBegin} {statusEnd}";
                     break;
 
                 case "finished":
-                    ShowMessageBox();                    
+                    ShowMessageBox();
                     break;
             }
+        }
+
+        private string GetWaitingText()
+        {
+            string status = "Waiting";
+            for (int count = 0; count < myGameManagement.GetDotCount(); count++)
+            {
+                status += ".";
+            }
+            myGameManagement.IncreaseDotCount();
+            return status;
         }
 
         #endregion
@@ -502,13 +520,13 @@ namespace TicTacChess_88130
         {
             if (cbxMakeConnection.Checked == true)
             {
-                timerArm.Enabled = true;
+                tmrArm.Enabled = true;
                 myGameManagement.SetConnectedToArm(true);
                 connectionForm.Show();
             }
             else
             {
-                timerArm.Enabled = false;
+                tmrArm.Enabled = false;
                 myGameManagement.SetConnectedToArm(false);
                 connectionForm.Hide();
             }
@@ -526,9 +544,8 @@ namespace TicTacChess_88130
             Tuple<int, int> previousArmPositions = myGameManagement.GetPositionsForArm(oldPosition);
             Tuple<int, int> newArmPositions = myGameManagement.GetPositionsForArm(newPosition);
 
-            connectionForm.AddCommands(previousArmPositions, newArmPositions);
             myGameManagement.UpdateWaitingForArm(true);
-            //ToggleBoard("disable");
+            connectionForm.AddCommands(previousArmPositions, newArmPositions);             
         }
 
         #endregion
@@ -544,20 +561,23 @@ namespace TicTacChess_88130
 
         #endregion
 
-        private void timerArm_Tick(object sender, EventArgs e)
+        private void tmrArm_Tick(object sender, EventArgs e)
         {
-            if (connectionForm.GetArmStatus() == true && myGameManagement.IsWaitingForArm() == true)
+            if (connectionForm.IsArmDone() == true && myGameManagement.IsWaitingForArm() == true)
             {
-                if (myGameManagement.GetGameState() == "finished")
-                {                    
-                    //ShowMessageBox();
+                if (myGameManagement.GetGameState() == "ready")
+                {
+                    UpdateStatusLabel("ready");
+                }
+                else if (myGameManagement.GetGameState() == "finished")
+                {
                     UpdateStatusLabel("finished");
                 }
                 else
                 {
                     UpdateStatusLabel("moved");
                 }
-                myGameManagement.UpdateWaitingForArm(false);                
+                myGameManagement.UpdateWaitingForArm(false);
             }
             else if (myGameManagement.IsWaitingForArm() == true)
             {
@@ -566,11 +586,12 @@ namespace TicTacChess_88130
         }
 
         private void ShowMessageBox()
-        {            
+        {
+            tmrArm.Enabled = false;
             string color = myGameManagement.GetCurrentColor();
             color = char.ToUpper(color[0]) + color.Substring(1);
             lblGameStatus.Text = $"{color} won!!";
-            MessageBox.Show($"{color} won!!");
+            MessageBox.Show($"{color} won!!");            
         }
     }
 }

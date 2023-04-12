@@ -17,6 +17,8 @@ namespace TicTacChess_88130
         private bool waitingForArm = false;
         private bool connectedToArm = false;
 
+        private int dotCount = 0;
+
         public GameManagement()
         {
             allSquares = new List<Square>();
@@ -162,6 +164,24 @@ namespace TicTacChess_88130
         public Piece GetCurrentPiece(int index)
         {
             return allSquares[index].GetCurrentPiece();
+        }
+
+        public int GetDotCount()
+        {
+            return dotCount;
+        }
+
+        public void IncreaseDotCount()
+        {
+            if (dotCount + 1 == 3)
+            {
+                dotCount = 0;
+            }
+            else
+            {
+                dotCount++;
+            }
+            
         }
 
         #region GetPositions
@@ -513,14 +533,16 @@ namespace TicTacChess_88130
         public string GetGameState()
         {
             return gameState;
+        }        
+
+        public void ChangeGameState(string newGameState)
+        {
+            gameState = newGameState;
         }
 
-        #endregion                
+        #endregion
 
-        //public void UpdateArmStatus()
-        //{
-        //    armIsDone = true;
-        //}
+        #region Arm
 
         public bool IsWaitingForArm()
         {
@@ -531,5 +553,7 @@ namespace TicTacChess_88130
         {
             waitingForArm = status;
         }
+
+        #endregion
     }
 }
