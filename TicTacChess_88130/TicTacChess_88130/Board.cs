@@ -426,6 +426,11 @@ namespace TicTacChess_88130
             rbtWhite.Checked = true;
             rbtWhite.Enabled = true;
             rbtBlack.Enabled = true;
+
+            if (myGameManagement.IsConnectedToArm())
+            {
+                tmrArm.Enabled = true;
+            }
         }
 
         /// <summary>
