@@ -12,6 +12,7 @@ namespace TicTacChess_88130
         private string type;
         private string color;
 
+        //Image of the piece
         private Bitmap image;
 
         public Piece(string c_type, string c_color, Bitmap c_image)

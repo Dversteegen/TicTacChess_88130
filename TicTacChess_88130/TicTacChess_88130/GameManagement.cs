@@ -458,6 +458,7 @@ namespace TicTacChess_88130
             CheckBoard();
         }
 
+        //Swaps the pieces of two squares based on indexes
         public Tuple<Bitmap, Bitmap> SwapPieces(int oldIndex, int newIndex)
         {
             Piece oldPiece = allSquares[oldIndex].GetCurrentPiece();
@@ -495,6 +496,9 @@ namespace TicTacChess_88130
             return false;
         }
 
+        /// <summary>
+        /// Toggles the color
+        /// </summary>
         public void ToggleColor()
         {
             if (currentColor == "white")
@@ -511,17 +515,7 @@ namespace TicTacChess_88130
         {
             return currentColor;
         }
-
-        public void SetConnectedToArm(bool newConnectionStatus)
-        {
-            connectedToArm = true;
-        }
-
-        public bool IsConnectedToArm()
-        {
-            return connectedToArm;
-        }
-
+        
         /// <summary>
         /// Checks if the game is finished
         /// </summary>
@@ -546,24 +540,13 @@ namespace TicTacChess_88130
             }
         }
 
-        #region Arm
-
-        /// <summary>
-        /// Get coordinates for the arm
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public Tuple<int, int> GetPositionsForArm(int index)
-        {
-            return allSquares[index].GetArmPositions();
-        }
-
-        #endregion
-
         #endregion
 
         #region ResetGame
 
+        /// <summary>
+        /// Removes the pieces off the squares
+        /// </summary>
         public void ResetSquares()
         {
             foreach (Square square in allSquares)
@@ -601,6 +584,26 @@ namespace TicTacChess_88130
         public void UpdateWaitingForArm(bool status)
         {
             waitingForArm = status;
+        }
+
+        public void SetConnectedToArm(bool newConnectionStatus)
+        {
+            connectedToArm = true;
+        }
+
+        public bool IsConnectedToArm()
+        {
+            return connectedToArm;
+        }
+
+        /// <summary>
+        /// Get coordinates for the arm
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public Tuple<int, int> GetPositionsForArm(int index)
+        {
+            return allSquares[index].GetArmPositions();
         }
 
         #endregion

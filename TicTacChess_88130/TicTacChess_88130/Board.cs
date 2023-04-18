@@ -266,7 +266,9 @@ namespace TicTacChess_88130
                 currentPictureBox = (PictureBox)sender;
                 int index = GetAllBoardPictureBoxes().FindIndex(pictureBox => pictureBox.Name == currentPictureBox.Name);
 
-                if ((myGameManagement.CheckColor(index) == true && currentPictureBox.BackColor == Color.FromArgb(64, 64, 64)) || (currentPictureBox.Image != null && currentPictureBox.BackColor == Color.Green))
+                if ((myGameManagement.CheckColor(index) == true && currentPictureBox.BackColor == Color.FromArgb(64, 64, 64)) || 
+                    (currentPictureBox.Image != null && currentPictureBox.BackColor == Color.Green))
+                    //If a picturebox has no image but the color is green, you can still drag it
                 {
                     if (currentPictureBox.Image != null)
                     {
@@ -317,17 +319,7 @@ namespace TicTacChess_88130
                 MakeBoardWhite();
                 DisplayCurrentTurn();
             }
-        }
-
-        private void SwapPieces()
-        {
-            int indexOfNewPictureBox = GetIndexOfPictureBox(newPictureBox.Name);
-            int indexOfOldPictureBox = GetIndexOfPictureBox(currentPictureBox.Name);
-
-            Tuple<Bitmap, Bitmap> swappedPieces = myGameManagement.SwapPieces(indexOfOldPictureBox, indexOfNewPictureBox);
-            currentPictureBox.Image = swappedPieces.Item2;
-            newPictureBox.Image = swappedPieces.Item1;
-        }
+        }        
 
         #endregion
 
@@ -423,12 +415,28 @@ namespace TicTacChess_88130
             }
         }
 
+        /// <summary>
+        /// Gives the board its default color
+        /// </summary>
         private void MakeBoardWhite()
         {
             foreach (PictureBox pictureBox in GetAllBoardPictureBoxes())
             {
                 pictureBox.BackColor = Color.FromArgb(128, 128, 128);
             }
+        }
+
+        /// <summary>
+        /// Swaps the pieces based on the index of the pictureboxes
+        /// </summary>
+        private void SwapPieces()
+        {
+            int indexOfNewPictureBox = GetIndexOfPictureBox(newPictureBox.Name);
+            int indexOfOldPictureBox = GetIndexOfPictureBox(currentPictureBox.Name);
+
+            Tuple<Bitmap, Bitmap> swappedPieces = myGameManagement.SwapPieces(indexOfOldPictureBox, indexOfNewPictureBox);
+            currentPictureBox.Image = swappedPieces.Item2;
+            newPictureBox.Image = swappedPieces.Item1;
         }
 
         /// <summary>
@@ -460,6 +468,7 @@ namespace TicTacChess_88130
 
         #region Restart
 
+        //Restarts the game
         private void btnRestartGame_Click(object sender, EventArgs e)
         {
             RestartSquares();
@@ -549,6 +558,10 @@ namespace TicTacChess_88130
             }
         }
 
+        /// <summary>
+        /// Generate the waiting text when waiting for the arm
+        /// </summary>
+        /// <returns></returns>
         private string GetWaitingText()
         {
             string status = "Waiting";
@@ -558,6 +571,18 @@ namespace TicTacChess_88130
             }
             myGameManagement.IncreaseDotCount();
             return status;
+        }
+
+        /// <summary>
+        /// Shows the messagebox with the winner
+        /// </summary>
+        private void ShowMessageBox()
+        {
+            tmrArm.Enabled = false;
+            string color = myGameManagement.GetCurrentColor();
+            color = char.ToUpper(color[0]) + color.Substring(1);
+            lblGameStatus.Text = $"{color} won!!";
+            MessageBox.Show($"{color} won!!");
         }
 
         #endregion
@@ -601,19 +626,11 @@ namespace TicTacChess_88130
             connectionForm.AddCommands(previousArmPositions, newArmPositions);
         }
 
-        #endregion
-
-        #endregion
-
-        #region Exit
-
-        private void btnExitApplication_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        #endregion
-
+        /// <summary>
+        /// Does something when the arm is done moving
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tmrArm_Tick(object sender, EventArgs e)
         {
             if (connectionForm.IsArmDone() == true && myGameManagement.IsWaitingForArm() == true)
@@ -638,13 +655,17 @@ namespace TicTacChess_88130
             }
         }
 
-        private void ShowMessageBox()
+        #endregion
+
+        #endregion
+
+        #region Exit
+
+        private void btnExitApplication_Click(object sender, EventArgs e)
         {
-            tmrArm.Enabled = false;
-            string color = myGameManagement.GetCurrentColor();
-            color = char.ToUpper(color[0]) + color.Substring(1);
-            lblGameStatus.Text = $"{color} won!!";
-            MessageBox.Show($"{color} won!!");
+            Application.Exit();
         }
+
+        #endregion               
     }
 }
