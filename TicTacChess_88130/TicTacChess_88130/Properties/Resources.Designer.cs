@@ -63,16 +63,6 @@ namespace TicTacChess_88130.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Black_bishop {
-            get {
-                object obj = ResourceManager.GetObject("Black_bishop", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Black_king {
             get {
                 object obj = ResourceManager.GetObject("Black_king", resourceCulture);
@@ -86,16 +76,6 @@ namespace TicTacChess_88130.Properties {
         internal static System.Drawing.Bitmap Black_knight {
             get {
                 object obj = ResourceManager.GetObject("Black_knight", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Black_pawn {
-            get {
-                object obj = ResourceManager.GetObject("Black_pawn", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,9 +103,9 @@ namespace TicTacChess_88130.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap White_bishop {
+        internal static System.Drawing.Bitmap Black_wizard {
             get {
-                object obj = ResourceManager.GetObject("White_bishop", resourceCulture);
+                object obj = ResourceManager.GetObject("Black_wizard", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,16 +133,6 @@ namespace TicTacChess_88130.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap White_pawn {
-            get {
-                object obj = ResourceManager.GetObject("White_pawn", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap White_queen {
             get {
                 object obj = ResourceManager.GetObject("White_queen", resourceCulture);
@@ -176,6 +146,16 @@ namespace TicTacChess_88130.Properties {
         internal static System.Drawing.Bitmap White_rook {
             get {
                 object obj = ResourceManager.GetObject("White_rook", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap White_wizard {
+            get {
+                object obj = ResourceManager.GetObject("White_wizard", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

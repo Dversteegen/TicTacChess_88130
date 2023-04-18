@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace TicTacChess_88130
@@ -204,6 +205,12 @@ namespace TicTacChess_88130
 
                 case "Knight":
                     return GetAvailablePositionsForKnight(index);
+
+                case "King":
+                    return GetAvailablePositionsForKing(index);
+
+                case "Wizard":
+                    return GetAvailablePositionsForWizard(index);
             }
             return null;
         }
@@ -244,6 +251,11 @@ namespace TicTacChess_88130
         public int[] GetAvailablePositionsForKnight(int index)
         {
             return GetKnightPositions(index).Except(GetAllTakenSqaures()).ToArray();
+        }
+
+        public int[] GetAvailablePositionsForKing(int index)
+        {
+            return GetKingPositions(index).Except(GetAllTakenSqaures()).ToArray();
         }
 
         /// <summary>
@@ -317,7 +329,7 @@ namespace TicTacChess_88130
         /// <param name="index"></param>
         /// <returns></returns>
         public int[] GetDiagonalPositions(int index)
-        {
+        {            
             switch (index)
             {
                 case 0:
@@ -378,6 +390,32 @@ namespace TicTacChess_88130
             return null;
         }
 
+        public int[] GetKingPositions(int index)
+        {
+            List<int>allIndexes = new List<int>();
+            int[] currentBlock = allSquares[index].GetSquareBlocks();
+            int count = 0;
+            foreach (Square square in allSquares)
+            {                
+                int[] newBlock = square.GetSquareBlocks();
+                var commonValues = currentBlock.Intersect(newBlock);
+                if (commonValues.Count() != 0)
+                {
+                    allIndexes.Add(count);
+                }
+                count++;
+            }
+            return allIndexes.ToArray();
+        }
+
+        public int[] GetAvailablePositionsForWizard(int index)
+        {
+            return allSquares
+                .Where(square => square.GetCurrentPiece() == null || square.GetCurrentPiece().GetPieceColor() == currentColor)
+                .Select(square => square.GetSquarePosition()).Except(new int[] { index})
+                .ToArray();
+        }
+
         #endregion
 
         #endregion
@@ -418,6 +456,17 @@ namespace TicTacChess_88130
             allSquares[indexOfOldPosition].ResetSquare();
             allSquares[indexOfPosition].UpdatePiece(currentPiece);
             CheckBoard();
+        }
+
+        public Tuple<Bitmap, Bitmap> SwapPieces(int oldIndex, int newIndex)
+        {
+            Piece oldPiece = allSquares[oldIndex].GetCurrentPiece();
+            Piece newPiece = allSquares[newIndex].GetCurrentPiece();
+
+            allSquares[oldIndex].UpdatePiece(newPiece);
+            allSquares[newIndex].UpdatePiece(oldPiece);
+
+            return Tuple.Create(oldPiece.GetPieceImage(), newPiece.GetPieceImage());
         }
 
         /// <summary>

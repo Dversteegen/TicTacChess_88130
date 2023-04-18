@@ -8,16 +8,20 @@ namespace TicTacChess_88130
 {
     class Square
     {
-        private int squarePosition;
-        private int squareHorizontal;
-        private int squareRotation;
-        private Piece currentPiece;
+        private int squarePosition;        
+        private int squareHorizontalArm;
+        private int squareRotationArm;
 
-        public Square(int c_squarePosition, int c_squareHorizontal, int c_squareRotation, Piece c_piece)
+        //I have divided the board in 4 blocks, I use these blocks for the king movement
+        private int[] squareBlock;
+        private Piece currentPiece;
+        
+        public Square(int c_squarePosition, int[] c_squareBlock, int c_squareHorizontalArm, int c_squareRotationArm, Piece c_piece)
         {
             squarePosition = c_squarePosition;
-            squareHorizontal = c_squareHorizontal;
-            squareRotation = c_squareRotation;
+            squareBlock = c_squareBlock;
+            squareHorizontalArm = c_squareHorizontalArm;
+            squareRotationArm = c_squareRotationArm;
             currentPiece = c_piece;
         }
 
@@ -28,6 +32,11 @@ namespace TicTacChess_88130
             return squarePosition;
         }
 
+        public int[] GetSquareBlocks()
+        {
+            return squareBlock;
+        }
+
         public Piece GetCurrentPiece()
         {
             return currentPiece;
@@ -35,12 +44,13 @@ namespace TicTacChess_88130
 
         public Tuple<int, int> GetArmPositions()
         {
-            return Tuple.Create(squareHorizontal, squareRotation);
+            return Tuple.Create(squareHorizontalArm, squareRotationArm);
         }
 
         #endregion
 
         #region Methods
+
         public void UpdatePiece(Piece newPiece)
         {
             currentPiece = newPiece;

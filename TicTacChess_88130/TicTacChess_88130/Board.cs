@@ -14,9 +14,6 @@ namespace TicTacChess_88130
         PictureBox newPictureBox = null;
         ConnectionForm connectionForm = new ConnectionForm();
 
-        int[] horizontalPositions = new int[] { 320, 400, 570, 850, 900, 1040, 1330, 1400, 1520 };
-        int[] rotationPositions = new int[] { 20, 135, 245, 0, 110, 200, 0, 95, 175 };
-
         public Board()
         {
             InitializeComponent();
@@ -53,23 +50,34 @@ namespace TicTacChess_88130
         /// </summary>
         private void SetUpPieces()
         {
-            string[] pieceTypes = new string[] { "Queen", "Rook", "Knight" };
+            string[] pieceTypes = new string[] { "Queen", "Rook", "Knight", "King", "Wizard" };
+            Bitmap[] pieceImages = new Bitmap[] {
+                Properties.Resources.White_king,
+            Properties.Resources.White_rook,
+            Properties.Resources.White_knight,
+            Properties.Resources.White_queen,
+            Properties.Resources.White_wizard,
+            Properties.Resources.Black_king,
+            Properties.Resources.Black_rook,
+            Properties.Resources.Black_knight,
+            Properties.Resources.Black_queen,
+            Properties.Resources.Black_wizard, };
             string currentColor = "white";
 
-            for (int count = 0; count < 6; count++)
+            for (int count = 0; count < 10; count++)
             {
                 string pieceType = "";
-                if (count < 3)
+                if (count < 5)
                 {
                     pieceType = pieceTypes[count];
                 }
                 else
                 {
-                    pieceType = pieceTypes[count - 3];
+                    pieceType = pieceTypes[count - 5];
                     currentColor = "black";
                 }
 
-                Piece newPiece = new Piece(pieceType, currentColor);
+                Piece newPiece = new Piece(pieceType, currentColor, pieceImages[count]);
                 myGameManagement.AddPiece(newPiece);
             }
         }
@@ -79,11 +87,15 @@ namespace TicTacChess_88130
         /// </summary>
         private void SetUpSquares()
         {
-            for (int count = 0; count < 9; count++)
-            {
-                Square newSquare = new Square(count, horizontalPositions[count], rotationPositions[count], null);
-                myGameManagement.AddSquare(newSquare);
-            }
+            myGameManagement.AddSquare(new Square(0, new int[] { 1 }, 320, 20, null));
+            myGameManagement.AddSquare(new Square(1, new int[] { 1, 2 }, 400, 135, null));
+            myGameManagement.AddSquare(new Square(2, new int[] { 2 }, 570, 245, null));
+            myGameManagement.AddSquare(new Square(3, new int[] { 1, 3 }, 850, 0, null));
+            myGameManagement.AddSquare(new Square(4, new int[] { 1, 2, 3, 4 }, 900, 110, null));
+            myGameManagement.AddSquare(new Square(5, new int[] { 2, 4 }, 1040, 200, null));
+            myGameManagement.AddSquare(new Square(6, new int[] { 3 }, 1330, 0, null));
+            myGameManagement.AddSquare(new Square(7, new int[] { 3, 4 }, 1400, 95, null));
+            myGameManagement.AddSquare(new Square(8, new int[] { 4 }, 1520, 175, null));
         }
 
         /// <summary>
@@ -140,6 +152,8 @@ namespace TicTacChess_88130
         private void ShowWhitePieces()
         {
             pbxQueen.Image = Properties.Resources.White_queen;
+            pbxKing.Image = Properties.Resources.White_king;
+            pbxWizard.Image = Properties.Resources.White_wizard;
             pbxRook.Image = Properties.Resources.White_rook;
             pbxKnight.Image = Properties.Resources.White_knight;
 
@@ -152,6 +166,8 @@ namespace TicTacChess_88130
         private void ShowBlackPieces()
         {
             pbxQueen.Image = Properties.Resources.Black_queen;
+            pbxKing.Image = Properties.Resources.Black_king;
+            pbxWizard.Image = Properties.Resources.Black_wizard;
             pbxRook.Image = Properties.Resources.Black_rook;
             pbxKnight.Image = Properties.Resources.Black_knight;
 
@@ -180,6 +196,14 @@ namespace TicTacChess_88130
                 {
                     pbxKnight.BackColor = Color.Red;
                 }
+                else if (piece.GetPieceType().Contains("King") == true)
+                {
+                    pbxKing.BackColor = Color.Red;
+                }
+                else if (piece.GetPieceType().Contains("Wizard") == true)
+                {
+                    pbxWizard.BackColor = Color.Red;
+                }
             }
         }
 
@@ -193,6 +217,8 @@ namespace TicTacChess_88130
                 pbxQueen.BackColor = Color.FromArgb(64, 64, 64);
                 pbxRook.BackColor = Color.FromArgb(64, 64, 64);
                 pbxKnight.BackColor = Color.FromArgb(64, 64, 64);
+                pbxKing.BackColor = Color.FromArgb(64, 64, 64);
+                pbxWizard.BackColor = Color.FromArgb(64, 64, 64);
             }
         }
 
@@ -240,7 +266,7 @@ namespace TicTacChess_88130
                 currentPictureBox = (PictureBox)sender;
                 int index = GetAllBoardPictureBoxes().FindIndex(pictureBox => pictureBox.Name == currentPictureBox.Name);
 
-                if (myGameManagement.CheckColor(index) == true && currentPictureBox.BackColor == Color.Silver)
+                if ((myGameManagement.CheckColor(index) == true && currentPictureBox.BackColor == Color.FromArgb(64, 64, 64)) || (currentPictureBox.Image != null && currentPictureBox.BackColor == Color.Green))
                 {
                     if (currentPictureBox.Image != null)
                     {
@@ -262,23 +288,45 @@ namespace TicTacChess_88130
         {
             newPictureBox = (PictureBox)sender;
 
-            if (newPictureBox.Image == null && newPictureBox.BackColor == Color.Green)
+            if (newPictureBox.BackColor == Color.Green)
             {
                 if (myGameManagement.GetGameState() == "setUp")
                 {
+                    Image newPicture = (Bitmap)e.Data.GetData(DataFormats.Bitmap);
+                    newPictureBox.Image = newPicture;
+                    RegisterMove(newPictureBox.Name);
                     currentPictureBox.BackColor = Color.Red;
                 }
                 else
                 {
-                    currentPictureBox.Image = null;
+                    if (newPictureBox.Image != null)
+                    {
+                        SwapPieces();
+                        string status = myGameManagement.GetGameState() == "finished" ? "finished" : "moved";
+                        UpdateStatusLabel(status);
+                    }
+                    else
+                    {
+                        currentPictureBox.Image = null;
+                        Image newPicture = (Bitmap)e.Data.GetData(DataFormats.Bitmap);
+                        newPictureBox.Image = newPicture;
+                        RegisterMove(newPictureBox.Name);
+                    }
                 }
 
-                Image newPicture = (Bitmap)e.Data.GetData(DataFormats.Bitmap);
-                newPictureBox.Image = newPicture;
-                RegisterMove(newPictureBox.Name);
                 MakeBoardWhite();
-                DisplayCurrentTurn();                
+                DisplayCurrentTurn();
             }
+        }
+
+        private void SwapPieces()
+        {
+            int indexOfNewPictureBox = GetIndexOfPictureBox(newPictureBox.Name);
+            int indexOfOldPictureBox = GetIndexOfPictureBox(currentPictureBox.Name);
+
+            Tuple<Bitmap, Bitmap> swappedPieces = myGameManagement.SwapPieces(indexOfOldPictureBox, indexOfNewPictureBox);
+            currentPictureBox.Image = swappedPieces.Item2;
+            newPictureBox.Image = swappedPieces.Item1;
         }
 
         #endregion
@@ -370,7 +418,7 @@ namespace TicTacChess_88130
                 else
                 {
                     string status = myGameManagement.GetGameState() == "finished" ? "finished" : "moved";
-                    UpdateStatusLabel(status);                    
+                    UpdateStatusLabel(status);
                 }
             }
         }
@@ -379,7 +427,7 @@ namespace TicTacChess_88130
         {
             foreach (PictureBox pictureBox in GetAllBoardPictureBoxes())
             {
-                pictureBox.BackColor = Color.White;
+                pictureBox.BackColor = Color.FromArgb(128, 128, 128);
             }
         }
 
@@ -395,11 +443,11 @@ namespace TicTacChess_88130
                 {
                     if (myGameManagement.CheckColor(count))
                     {
-                        pictureBox.BackColor = Color.Silver;
+                        pictureBox.BackColor = Color.FromArgb(64, 64, 64);
                     }
                     else
                     {
-                        pictureBox.BackColor = Color.White;
+                        pictureBox.BackColor = Color.FromArgb(128, 128, 128);
                     }
                     count++;
                 }
@@ -419,7 +467,7 @@ namespace TicTacChess_88130
             foreach (PictureBox square in pnlBoard.Controls)
             {
                 square.Image = null;
-                square.BackColor = Color.White;
+                square.BackColor = Color.FromArgb(128, 128, 128);
             }
 
             lblGameStatus.Text = "Set up board";
@@ -478,7 +526,7 @@ namespace TicTacChess_88130
                     rbtWhite.Enabled = false;
                     rbtBlack.Enabled = false;
                     MakeBoardWhite();
-                    DisplayCurrentTurn();                    
+                    DisplayCurrentTurn();
                     myGameManagement.ChangeGameState("playing");
                     break;
 
@@ -550,7 +598,7 @@ namespace TicTacChess_88130
             Tuple<int, int> newArmPositions = myGameManagement.GetPositionsForArm(newPosition);
 
             myGameManagement.UpdateWaitingForArm(true);
-            connectionForm.AddCommands(previousArmPositions, newArmPositions);             
+            connectionForm.AddCommands(previousArmPositions, newArmPositions);
         }
 
         #endregion
@@ -596,7 +644,7 @@ namespace TicTacChess_88130
             string color = myGameManagement.GetCurrentColor();
             color = char.ToUpper(color[0]) + color.Substring(1);
             lblGameStatus.Text = $"{color} won!!";
-            MessageBox.Show($"{color} won!!");            
+            MessageBox.Show($"{color} won!!");
         }
     }
 }
